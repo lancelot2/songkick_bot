@@ -18,10 +18,10 @@ class AnalyzerController < ApplicationController
     unless  params["entry"][0]["messaging"][0]["delivery"]
       if User.find_by facebook_id: @sender
         @sender = User.find_by facebook_id: @sender
-        redirect_to new_message_conversation_path(@sender)
+        redirect_to new_message_path(@sender)
       else
         create_user(params["entry"][0]["messaging"][0]["sender"]["id"])
-        redirect_to new_message_conversation_path(@sender)
+        redirect_to new_message_path(@sender)
       end
 
     #  message_received = params["entry"][0]["messaging"][0]["message"]["text"]
