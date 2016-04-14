@@ -12,8 +12,25 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 0) do
-
-  # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  gem 'puma'
+  gem 'pg'
+  gem 'figaro'
+  gem 'jbuilder', '~> 2.0'
+  gem 'redis'
+  gem 'rack-cors', :require => 'rack/cors'
+  gem "browser"
 
+  group :development, :test do
+    gem 'binding_of_caller'
+    gem 'better_errors'
+    gem 'quiet_assets'
+    gem 'pry-byebug'
+    gem 'pry-rails'
+    gem 'spring'
+  end
+
+  group :production do
+    gem 'rails_12factor'
+  end
 end
