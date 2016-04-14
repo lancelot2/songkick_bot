@@ -11,26 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20160414193430) do
+
+  # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  gem 'puma'
-  gem 'pg'
-  gem 'figaro'
-  gem 'jbuilder', '~> 2.0'
-  gem 'redis'
-  gem 'rack-cors', :require => 'rack/cors'
-  gem "browser"
 
-  group :development, :test do
-    gem 'binding_of_caller'
-    gem 'better_errors'
-    gem 'quiet_assets'
-    gem 'pry-byebug'
-    gem 'pry-rails'
-    gem 'spring'
+  create_table "conversations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  group :production do
-    gem 'rails_12factor'
+  add_index "conversations", ["user_id"], name: "index_conversations_on_user_id", using: :btree
+
+  create_table "messages", force: :cascade do |t|
+    t.integer  "conversation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "content"
   end
+
+  add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.integer  "facebook_id", limit: 8
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_foreign_key "conversations", "users"
+  add_foreign_key "messages", "conversations"
 end
