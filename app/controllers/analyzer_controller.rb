@@ -16,8 +16,8 @@ class AnalyzerController < ApplicationController
   def webhook_post
 
     unless  params["entry"][0]["messaging"][0]["delivery"]
-      if User.find_by facebook_id: @sender
-        @sender = User.find_by facebook_id: @sender
+      if User.find_by facebook_id: params["entry"][0]["messaging"][0]["sender"]["id"]
+        @sender = User.find_by facebook_id: params["entry"][0]["messaging"][0]["sender"]["id"]
         redirect_to new_message_path(@sender)
       else
         create_user(params["entry"][0]["messaging"][0]["sender"]["id"])
