@@ -10,9 +10,9 @@ class AnalyzerController < ApplicationController
     token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
     url = "https://graph.facebook.com/v2.6/me/messages?"
     unless  params["entry"][0]["messaging"][0]["delivery"]
-      messare_received = params["entry"][0]["messaging"][0]["message"]["text"]
+      message_received = params["entry"][0]["messaging"][0]["message"]["text"]
       sender = params["entry"][0]["messaging"][0]["sender"]["id"]
-      text = "Hello ! What can I do for you ?"
+      text = message_received
 
       request_params =  {
         recipient: {id: sender},
