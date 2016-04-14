@@ -25,7 +25,6 @@ class AnalyzerController < ApplicationController
       end
 
     #  message_received = params["entry"][0]["messaging"][0]["message"]["text"]
-
     end
   end
 end
