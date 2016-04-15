@@ -12,7 +12,7 @@ class ConversationsController < ApplicationController
     url = "https://graph.facebook.com/v2.6/me/messages?"
     text = "hello"
      request_params =  {
-        recipient: {id: sender},
+        recipient: {id: @sender.facebook_id},
         message: {text: text},
         access_token: token
       }
