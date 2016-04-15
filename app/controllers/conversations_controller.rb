@@ -35,6 +35,7 @@ class ConversationsController < ApplicationController
   end
 
   def new_message(sender)
+    p sender
     if sender.conversations.nil?
       new_conversation(sender)
       answer(sender)
@@ -42,4 +43,5 @@ class ConversationsController < ApplicationController
       answer(sender)
     end
   end
+
 end
