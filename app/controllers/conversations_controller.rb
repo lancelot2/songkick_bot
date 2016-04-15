@@ -34,7 +34,7 @@ class ConversationsController < ApplicationController
     request(sender.facebook_id, "hello")
   end
 
-  def new_message(sender)
+  def new_message
     puts sender
    # if sender.conversations.nil?
    #    new_conversation(sender)
