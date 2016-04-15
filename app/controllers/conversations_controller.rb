@@ -35,7 +35,7 @@ class ConversationsController < ApplicationController
   end
 
   def new_message
-     @sender = params[:sender]
+     @sender = User.find(params[:sender])
      puts @sender.facebook_id
    # if sender.conversations.nil?
    #    new_conversation(sender)
