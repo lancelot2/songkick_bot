@@ -36,7 +36,7 @@ class ConversationsController < ApplicationController
 
   def new_message
      @sender = params[:sender]
-     puts @sender
+     puts @sender.facebook_id
    # if sender.conversations.nil?
    #    new_conversation(sender)
    #    answer(sender)
