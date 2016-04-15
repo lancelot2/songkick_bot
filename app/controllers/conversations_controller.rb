@@ -35,13 +35,13 @@ class ConversationsController < ApplicationController
   end
 
   def new_message
-    puts sender
+     @sender = params[:sender]
+     puts @sender
    # if sender.conversations.nil?
    #    new_conversation(sender)
    #    answer(sender)
    #  else
    #    answer(sender)
    #  end
-  end
-
+    end
 end
