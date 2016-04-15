@@ -4,6 +4,6 @@ Rails.application.routes.draw do
   get '/webhook', to: 'analyzer#webhook'
   post '/webhook', to: 'analyzer#webhook_post'
 
-  get '/new_message', to: 'conversation#new_message'
-  get '/new_conversation', to: 'conversation#new'
+  get '/new_message', to: 'conversations#new_message'
+  get '/new_conversation', to: 'conversations#new'
 end
