@@ -6,7 +6,7 @@ class ConversationsController < ApplicationController
     @conversation.save
   end
 
-  # def request(sender, text)
+  # def request
   #   token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
   #   url = "https://graph.facebook.com/v2.6/me/messages?"
 
@@ -29,19 +29,19 @@ class ConversationsController < ApplicationController
   #     http.request(request)
   # end
 
-  def answer(sender)
+  def answer
     text = "hell"
-    request(sender.facebook_id, "hello")
+    puts params
+    #request(@sender.facebook_id, "hello")
   end
 
   def new_message
-     @sender = User.find(params[:sender])
-     puts @sender.facebook_id
-   # if sender.conversations.nil?
-   #    new_conversation(sender)
-   #    answer(sender)
-   #  else
-   #    answer(sender)
-   #  end
+    @sender = User.find(params[:sender])
+    if sender.conversations.nil?
+      new_conversation(@sender)
+      answer(@sender)
+    else
+      answer(@sender)
     end
+  end
 end
