@@ -29,7 +29,7 @@ class ConversationsController < ApplicationController
   #     http.request(request)
   # end
 
-  def answer
+  def answer(sender)
     text = "hell"
     puts params
     #request(@sender.facebook_id, "hello")
