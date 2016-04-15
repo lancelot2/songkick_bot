@@ -37,7 +37,7 @@ class ConversationsController < ApplicationController
 
   def new_message
     @sender = User.find(params[:sender])
-    if sender.conversations.nil?
+    if @sender.conversations.nil?
       new_conversation(@sender)
       answer(@sender)
     else
