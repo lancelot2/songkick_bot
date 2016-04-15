@@ -10,7 +10,7 @@ class ConversationsController < ApplicationController
   def request
     token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
     url = "https://graph.facebook.com/v2.6/me/messages?"
-    puts params
+    text = "hello"
      request_params =  {
         recipient: {id: sender},
         message: {text: text},
