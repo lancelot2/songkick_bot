@@ -40,24 +40,28 @@ class AnalyzerController < ApplicationController
 end
 
   def find_or_create_session(fbid)
-    sessionId = 0
-    sessions.each do |k, v|
-      if k["fbid"] == fbid
-        sessionId = k
-      else
-        sessionId = Date.today.to_time.to_i.to_s
-        sessions[sessionId] = {fbid: fbid, context: {}};
-      end
-    sessionId
+    @sessions = Session.all
+    if @sessions.find_by facebook_id: fbid
+      @session = @sessions.find_by facebook_id: fbid
+      sessionId = @session.session_id
+    else
+      @session = Session.new
+      @session.id = Date.today.to_time.to_i.to_s
+      @session.facebook_id = fbid
+      @session.context = {}
+      @session.save
     end
+    @session
   end
+
 
   def webhook_post
     recipientId = 0
 
     actions = {
       :say => -> (session_id, context, msg, cb) {
-        recipientId = sessions[sessionId]["fbid"]
+        @session = Session.find_by session_id: session_id
+        recipientId = @session.facebook_id
         if recipientId
           fbMessage(recipientId, msg, cb)
         else
@@ -75,9 +79,8 @@ end
     unless  params["entry"][0]["messaging"][0]["delivery"]
       msg = params["entry"][0]["messaging"][0]["message"]["text"]
       sender = params["entry"][0]["messaging"][0]["sender"]["id"]
-      session_id = find_or_create_session(sender)
-
-      client.run_actions session_id, msg, sessions[sessionId]["context"]
+      @session = find_or_create_session(sender)
+      client.run_actions @session.session_id, msg, @session.context
     end
   end
 end
