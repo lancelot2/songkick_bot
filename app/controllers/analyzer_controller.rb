@@ -74,7 +74,7 @@ end
       :merge => -> (session_id, context, entities, msg) {
        return context
       },
-      :error => -> (session_id, context) {
+      :error => -> (session_id, context, error) {
         p 'Oops I don\'t know what to do.'
       },
     }
