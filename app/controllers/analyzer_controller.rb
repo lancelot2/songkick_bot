@@ -56,6 +56,9 @@ end
 
 
   def webhook_post
+    access_token = "RNZ5ICWG3RUKRKT7ZNUSGCVIDB6CHGAT"
+    client = Wit.new access_token, actions
+
     recipientId = 0
 
     actions = {
