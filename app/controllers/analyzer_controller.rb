@@ -62,7 +62,7 @@ end
     recipientId = 0
     @actions = {}
     @actions = {
-      :say => -> (session_id, context, msg, cb) {
+      :say => -> (session_id, context, msg) {
         @session = Session.find_by session_id: session_id
         recipientId = @session.facebook_id
         if recipientId
