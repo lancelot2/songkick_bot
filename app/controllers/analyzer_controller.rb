@@ -20,36 +20,9 @@ class AnalyzerController < ApplicationController
 
   request_params =  {
     recipient: {id: recipient_id},
-    message: {
-        "attachment":{
-          "type":"template",
-          "payload":{
-            "template_type":"generic",
-            "elements":[
-              {
-                "title":"Welcome to My Company!",
-                "item_url":"https://www.petersbowlerhats.com",
-                "image_url":"https://www.petersbowlerhats.com/img/hat.jpeg",
-                "subtitle":"We have the right hat for everyone.",
-                "buttons":[
-                  {
-                    "type":"web_url",
-                    "title":"View Website",
-                    "url":"https://www.petersbowlerhats.com"
-                  },
-                  {
-                    "type":"postback",
-                    "title":"Start Chatting"
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      },
+    message: {text: msg},
     access_token: token
   }
-
 
   uri = URI.parse(url)
 
