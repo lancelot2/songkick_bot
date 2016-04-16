@@ -49,6 +49,7 @@ end
         sessions[sessionId] = {fbid: fbid, context: {}};
       end
     sessionId
+    end
   end
 
   def webhook_post
