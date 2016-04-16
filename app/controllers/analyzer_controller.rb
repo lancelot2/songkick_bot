@@ -14,7 +14,7 @@ class AnalyzerController < ApplicationController
   # end
 
 
-  def fb_request(recipient_id, msg, cb)
+  def fb_request(recipient_id, msg)
   token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
   url = "https://graph.facebook.com/v2.6/me/messages?"
 
@@ -61,18 +61,29 @@ end
 
     recipientId = 0
     @actions = {}
+    # @actions = {
+    #   :say => -> (session_id, context, msg) {
+    #     @session = Session.find_by session_id: session_id
+    #     recipientId = @session.facebook_id
+    #     if recipientId
+    #       fbMessage(recipientId, msg, cb)
+    #     else
+    #       puts "no session id"
+    #     end
+    #   },
+    #   :merge => -> (session_id, context, entities, msg) {
+    #    return context
+    #   },
+    #   :error => -> (session_id, context, error) {
+    #     p 'Oops I don\'t know what to do.'
+    #   },
+    # }
     @actions = {
       :say => -> (session_id, context, msg) {
-        @session = Session.find_by session_id: session_id
-        recipientId = @session.facebook_id
-        if recipientId
-          fbMessage(recipientId, msg, cb)
-        else
-          puts "no session id"
-        end
+        fbMessage(1006889982732663, msg)
       },
       :merge => -> (session_id, context, entities, msg) {
-       return context
+        return context
       },
       :error => -> (session_id, context, error) {
         p 'Oops I don\'t know what to do.'
