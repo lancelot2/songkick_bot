@@ -6,4 +6,9 @@ Rails.application.routes.draw do
 
   get '/new_message', to: 'conversations#new_message'
   get '/new_conversation', to: 'conversations#new'
+
+  get '/find_or_create_session', to:'analyzer#find_or_create_session'
+  get '/fb_request', to:'analyzer#fb_request'
+
 end
+
