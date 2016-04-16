@@ -35,8 +35,6 @@ class AnalyzerController < ApplicationController
   request.body = request_params.to_json
 
   http.request(request)
-
-  response = http.request(request)
 end
 
   def find_or_create_session(fbid)
@@ -50,7 +48,6 @@ end
       @session.context = {}
       @session.save
     end
-    puts @session
     @session
   end
 
@@ -97,7 +94,7 @@ end
         sender = params["entry"][0]["messaging"][0]["sender"]["id"]
         @session = find_or_create_session(sender)
         puts @session
-      client.run_actions @session.id, msg, {}
+       client.run_actions @session.id, msg, {}
     end
   end
 end
