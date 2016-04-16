@@ -43,14 +43,14 @@ end
     @sessions = Session.all
     if @sessions.find_by facebook_id: fbid
       @session = @sessions.find_by facebook_id: fbid
-      sessionId = @session.session_id
+      sessionId = @session.id
     else
       @session = Session.new
-      @session.id = Date.today.to_time.to_i.to_s
       @session.facebook_id = fbid
       @session.context = {}
       @session.save
     end
+    puts @session
     @session
   end
 
@@ -80,7 +80,8 @@ end
     # }
     @actions = {
       :say => -> (session_id, context, msg) {
-        fbMessage(1006889982732663, msg)
+        @session = Session.find(session_id)
+        fb_request(@session.facebook_id, msg)
       },
       :merge => -> (session_id, context, entities, msg) {
         return context
@@ -92,10 +93,11 @@ end
 
     client = Wit.new access_token, @actions
     unless  params["entry"][0]["messaging"][0]["delivery"]
-      msg = params["entry"][0]["messaging"][0]["message"]["text"]
-      sender = params["entry"][0]["messaging"][0]["sender"]["id"]
-      @session = find_or_create_session(sender)
-      client.run_actions @session.session_id, msg, @session.context
+        msg = params["entry"][0]["messaging"][0]["message"]["text"]
+        sender = params["entry"][0]["messaging"][0]["sender"]["id"]
+        @session = find_or_create_session(sender)
+        puts @session
+      client.run_actions @session.id, msg, {}
     end
   end
 end
