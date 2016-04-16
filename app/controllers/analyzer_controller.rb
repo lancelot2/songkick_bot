@@ -46,10 +46,10 @@ class AnalyzerController < ApplicationController
             ]
           }
         }
-      }
-    },
+      },
     access_token: token
   }
+
 
   uri = URI.parse(url)
 
