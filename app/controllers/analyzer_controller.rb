@@ -60,7 +60,7 @@ end
     client = Wit.new access_token, actions
 
     recipientId = 0
-
+    actions = {}
     actions = {
       :say => -> (session_id, context, msg, cb) {
         @session = Session.find_by session_id: session_id
