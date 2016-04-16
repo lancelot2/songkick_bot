@@ -57,11 +57,11 @@ end
 
   def webhook_post
     access_token = "RNZ5ICWG3RUKRKT7ZNUSGCVIDB6CHGAT"
-    client = Wit.new access_token, actions
+
 
     recipientId = 0
-    actions = {}
-    actions = {
+    @actions = {}
+    @actions = {
       :say => -> (session_id, context, msg, cb) {
         @session = Session.find_by session_id: session_id
         recipientId = @session.facebook_id
@@ -79,6 +79,7 @@ end
       },
     }
 
+    client = Wit.new access_token, @actions
     unless  params["entry"][0]["messaging"][0]["delivery"]
       msg = params["entry"][0]["messaging"][0]["message"]["text"]
       sender = params["entry"][0]["messaging"][0]["sender"]["id"]
