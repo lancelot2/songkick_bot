@@ -10,5 +10,7 @@ Rails.application.routes.draw do
   get '/find_or_create_session', to:'analyzer#find_or_create_session'
   get '/fb_request', to:'analyzer#fb_request'
 
+  post 'twilio/text' => 'twilio#text'
+
 end
 
