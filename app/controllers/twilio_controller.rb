@@ -11,7 +11,7 @@ class TwilioController < ApplicationController
       auth_token = "bb79881b9d4c0d2b31126f13259026be"
       @client = Twilio::REST::Client.new account_sid, auth_token
       @message = @client.messages.create(
-        to:   params["From"],
+        to:   "+33632621718",
         from: "+33756798174",
         body: "Hello!"
       )
