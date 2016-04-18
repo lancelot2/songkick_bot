@@ -13,5 +13,7 @@ Rails.application.routes.draw do
   get 'twilio/send_text' => 'twilio#send_text'
   post 'twilio/reception' => 'twilio#reception'
 
+  get 'telegram/reception' => 'telegram#reception'
+
 end
 
