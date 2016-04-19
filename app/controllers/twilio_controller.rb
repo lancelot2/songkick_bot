@@ -39,7 +39,5 @@ class TwilioController < ApplicationController
     sender = params["From"]
     session = rand(1..10000)
     client.run_actions session, msg, {}
-
   end
-
 end

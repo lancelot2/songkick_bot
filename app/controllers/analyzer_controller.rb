@@ -58,23 +58,6 @@ end
 
     recipientId = 0
     @actions = {}
-    # @actions = {
-    #   :say => -> (session_id, context, msg) {
-    #     @session = Session.find_by session_id: session_id
-    #     recipientId = @session.facebook_id
-    #     if recipientId
-    #       fbMessage(recipientId, msg, cb)
-    #     else
-    #       puts "no session id"
-    #     end
-    #   },
-    #   :merge => -> (session_id, context, entities, msg) {
-    #    return context
-    #   },
-    #   :error => -> (session_id, context, error) {
-    #     p 'Oops I don\'t know what to do.'
-    #   },
-    # }
     @actions = {
       :say => -> (session_id, context, msg) {
         @session = Session.find(session_id)
