@@ -69,15 +69,15 @@ end
       :error => -> (session_id, context, error) {
         p 'Oops I don\'t know what to do.'
       },
-      :create_query => -> (session_id, context, entities, msg) {
+      :create_query => -> (session_id, context) {
         p context
         return context
       },
-      :add_brand_to_query => -> (session_id, context, entities, msg) {
+      :add_brand_to_query => -> (session_id, context) {
         p context
         return context
       },
-      :add_style_to_query => -> (session_id, context, entities, msg) {
+      :add_style_to_query => -> (session_id, context) {
         p context
         return context
       }
