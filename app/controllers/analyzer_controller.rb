@@ -53,7 +53,7 @@ end
 
 
   def webhook_post
-    access_token = "RNZ5ICWG3RUKRKT7ZNUSGCVIDB6CHGAT"
+    access_token = "KVGTTJ5B3PRINRMAZNPWN25E3YVT6QKB"
 
 
     recipientId = 0
@@ -69,6 +69,18 @@ end
       :error => -> (session_id, context, error) {
         p 'Oops I don\'t know what to do.'
       },
+      :create_query => -> (session_id, context, entities, msg) {
+        p context
+        return context
+      },
+      :add_brand_to_query => -> (session_id, context, entities, msg) {
+        p context
+        return context
+      },
+      :add_style_to_query => -> (session_id, context, entities, msg) {
+        p context
+        return context
+      }
     }
 
     client = Wit.new access_token, @actions
