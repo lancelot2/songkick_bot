@@ -73,9 +73,7 @@ end
          if entities.first[1]
           p entities.first[1]
         end
-          if entities[0][1]
-          p entities[0][1]
-        end
+
         p entities
         return context
       },
