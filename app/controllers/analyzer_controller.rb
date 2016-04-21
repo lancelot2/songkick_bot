@@ -64,11 +64,11 @@ end
         fb_request(@session.facebook_id, msg)
       },
       :merge => -> (session_id, context, entities, msg) {
-         if entities["gender"][0]["value"]
-          p entities["gender"][0]["value"]
+         if entities["gender"][0]
+          p entities["gender"][0]
         end
-        if entities["brand"][0]["value"]
-          p entities["brand"][0]["value"]
+        if entities["brand"][0]
+          p entities["brand"][0]
         end
          if entities.first[1]
           p entities.first[1]
