@@ -65,7 +65,7 @@ end
       },
       :merge => -> (session_id, context, entities, msg) {
          if entities["gender"]
-          p entities["gender"]
+          p entities["gender"].first["value"]
         end
         if entities["brand"]
           p entities["brand"]
