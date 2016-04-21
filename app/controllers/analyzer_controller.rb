@@ -64,7 +64,9 @@ end
         fb_request(@session.facebook_id, msg)
       },
       :merge => -> (session_id, context, entities, msg) {
-        p entities
+        if entities["brand"]
+          p entities["brand"]
+        end
         return context
       },
       :error => -> (session_id, context, error) {
