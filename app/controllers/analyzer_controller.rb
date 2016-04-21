@@ -64,6 +64,7 @@ end
         fb_request(@session.facebook_id, msg)
       },
       :merge => -> (session_id, context, entities, msg) {
+        p context
         if entities["gender"]
           p entities["gender"].first["value"]
           context["gender"] = entities["gender"].first["value"]
@@ -76,8 +77,6 @@ end
           p entities["style"].first["value"]
           context["style"] = entities["style"].first["value"]
         end
-
-        p entities
         return context
       },
       :error => -> (session_id, context, error) {
