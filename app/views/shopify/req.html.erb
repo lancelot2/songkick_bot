@@ -1,0 +1,6 @@
+<% @products.each do |product| %>
+<%= product[1].first["title"] %>
+<%= product[1].first["variants"].first["old_inventory_quantity"]%>
+<%= product[1].first["product_type"]%>
+<%= product[1].first["images"].first["src"]%>
+<% end %>

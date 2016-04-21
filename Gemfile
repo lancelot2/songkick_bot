@@ -26,6 +26,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'wit', '~> 3.3'
 gem 'telegram-bot-ruby'
 gem 'twilio-ruby'
+gem 'shopify_api'
+gem 'rest-client', '~> 1.8'
 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc

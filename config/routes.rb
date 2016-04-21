@@ -14,6 +14,6 @@ Rails.application.routes.draw do
   post 'twilio/reception' => 'twilio#reception'
 
   get 'telegram/reception' => 'telegram#reception'
-
+  get 'req' => 'shopify#req'
 end
 
