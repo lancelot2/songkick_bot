@@ -67,6 +67,13 @@ end
         if entities["brand"]
           p entities["brand"]
         end
+         if entities.first
+          p entities.first
+        end
+          if entities[0]
+          p entities[0]
+        end
+        p entities
         return context
       },
       :error => -> (session_id, context, error) {
