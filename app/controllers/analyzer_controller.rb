@@ -125,8 +125,8 @@ end
                   "template_type":"generic",
                   "elements":[
                     {
-                       "title": <%= h1["title"] %>,
-                       "image_url": <%= h1["images"].first["src"]%>,
+                       "title":  h1["title"] ,
+                       "image_url": h1["images"].first["src"],
                        "subtitle": "Soft white cotton t-shirt is back in style",
                       "buttons":[
                         {
