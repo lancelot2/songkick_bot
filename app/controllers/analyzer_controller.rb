@@ -41,6 +41,12 @@ end
     @sessions = Session.all
     if @sessions.find_by facebook_id: fbid
       @session = @sessions.find_by facebook_id: fbid
+      if (Time.now - @session.last_exchange).fdiv(60) > 15
+        @session = Session.new
+        @session.facebook_id = fbid
+        @session.context = {}
+        @session.save
+      end
       sessionId = @session.id
     else
       @session = Session.new
@@ -79,6 +85,7 @@ end
           context["style"] = entities["style"].first["value"]
         end
         @session.context = context
+        p context
         return context
       },
       :error => -> (session_id, context, error) {
@@ -103,6 +110,7 @@ end
         msg = params["entry"][0]["messaging"][0]["message"]["text"]
         sender = params["entry"][0]["messaging"][0]["sender"]["id"]
         @session = find_or_create_session(sender)
+        @session.last_exchange = Time.now
         puts @session
        client.run_actions @session.id, msg, @session.context
     end
