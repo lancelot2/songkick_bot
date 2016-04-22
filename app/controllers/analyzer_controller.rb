@@ -64,6 +64,7 @@ end
         fb_request(@session.facebook_id, msg)
       },
       :merge => -> (session_id, context, entities, msg) {
+        @session = Session.find(session_id)
         p context
         if entities["gender"]
           p entities["gender"].first["value"]
@@ -77,6 +78,7 @@ end
           p entities["style"].first["value"]
           context["style"] = entities["style"].first["value"]
         end
+        @session.context = context
         return context
       },
       :error => -> (session_id, context, error) {
@@ -102,7 +104,7 @@ end
         sender = params["entry"][0]["messaging"][0]["sender"]["id"]
         @session = find_or_create_session(sender)
         puts @session
-       client.run_actions @session.id, msg, {}
+       client.run_actions @session.id, msg, @session.context
     end
   end
 end
