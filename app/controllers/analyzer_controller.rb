@@ -6,13 +6,10 @@ class AnalyzerController < ApplicationController
     render :json => params["hub.challenge"]
   end
 
-  # def create_user(facebook_id)
-  #   @sender = User.new
-  #   @sender.facebook_id = facebook_id
-  #   @sender.save
-  #   @sender
-  # end
-
+  def req
+    @products = RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279&vendor=nike&product_type=lifestyle'
+    @collection = RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/custom_collections/263046279.json'
+  end
 
   def fb_request(recipient_id, msg)
   token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
@@ -23,6 +20,23 @@ class AnalyzerController < ApplicationController
     message: {text: msg},
     access_token: token
   }
+
+  uri = URI.parse(url)
+
+  response = Net::HTTP.new(uri.host, uri.port)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+  request = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+  request.body = request_params.to_json
+
+  http.request(request)
+end
+
+ def fb_structured_request(recipient_id, request_params)
+  token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
+  url = "https://graph.facebook.com/v2.6/me/messages?"
 
   uri = URI.parse(url)
 
@@ -101,7 +115,45 @@ end
         @session = Session.find(session_id)
         p context
         @products = RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context["gender"]}&vendor=#{context["brand"]}&product_type=#{context["style"]}'
-        fb_request(@session.facebook_id, msg)
+        JSON.parse(@products)["products"].each do |h1|
+          request_params =  {
+              recipient: {id: 1006889982732663},
+              message: {
+              "attachment":{
+                "type":"template",
+                "payload":{
+                  "template_type":"generic",
+                  "elements":[
+                    {
+                       "title": <%= h1["title"] %>,
+                       "image_url": <%= h1["images"].first["src"]%>,
+                       "subtitle": "Soft white cotton t-shirt is back in style",
+                      "buttons":[
+                        {
+                          "type":"web_url",
+                          "url":"https://petersapparel.parseapp.com/view_item?item_id=100",
+                          "title":"More info"
+                        },
+                        {
+                          "type":"web_url",
+                          "url":"https://petersapparel.parseapp.com/buy_item?item_id=100",
+                          "title":"Check stock"
+                        },
+                        {
+                          "type":"postback",
+                          "title":"Similar products",
+                          "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM100"
+                        }
+                      ]
+                    },
+                  ]
+                }
+              }
+            },
+              access_token: token
+            }
+          fb_structured_request(@session.facebook_id, request_params)
+        end
         return context
       }
     }
