@@ -1,6 +1,7 @@
-<% @products.each do |product| %>
-Titre du produit: <%= product[1].first["title"] %> </br>
-Stock: <%= product[1].first["variants"].first["old_inventory_quantity"]%></br>
-Catégorie: <%= product[1].first["product_type"]%></br>
-Image du produit:<%= product[1].first["images"].first["src"]%></br>
-<% end %>
+ <%# @products.each do |product| %>
+ <%#= product[1].first["title"] %>
+<%#= product[1].first["variants"].first["old_inventory_quantity"]%>
+ <%#= product[1].first["product_type"]%>
+<%#= product[1].first["images"].first["src"]%>
+<%# end %>
+<%= @products %>

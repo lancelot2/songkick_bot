@@ -75,35 +75,33 @@ end
         @session = Session.find(session_id)
         p context
         if entities["gender"]
-          p entities["gender"].first["value"]
-          context["gender"] = entities["gender"].first["value"]
+          if entities["gender"].downcase = "men"
+            context["gender"] = 263046279
+          else
+            context["gender"] = 263046151
+          end
         end
+
         if entities["brand"]
-          p entities["brand"].first["value"]
-          context["brand"] = entities["brand"].first["value"]
+          context["brand"] = entities["brand"].first["value"].downcase
         end
+
         if entities["style"]
-          p entities["style"].first["value"]
-          context["style"] = entities["style"].first["value"]
+          context["style"] = entities["style"].first["value"].downcase
         end
+
         @session.context = context
         @session.save
-        p context
         return context
       },
       :error => -> (session_id, context, error) {
         p 'Oops I don\'t know what to do.'
       },
-      :create_query => -> (session_id, context) {
+      :run_query => -> (session_id, context) {
+        @session = Session.find(session_id)
         p context
-        return context
-      },
-      :add_brand_to_query => -> (session_id, context) {
-        p context
-        return context
-      },
-      :add_style_to_query => -> (session_id, context) {
-        p context
+        @products = RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context["gender"]}&vendor=#{context["brand"]}&product_type=#{context["style"]}'
+        fb_request(@session.facebook_id, msg)
         return context
       }
     }
@@ -114,7 +112,7 @@ end
         sender = params["entry"][0]["messaging"][0]["sender"]["id"]
         @session = find_or_create_session(sender)
         @session.last_exchange = Time.now
-        puts "Context: #{@session.context}"
+        @session.save
         client.run_actions @session.id, msg, @session.context
     end
   end
