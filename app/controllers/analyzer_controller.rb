@@ -111,8 +111,8 @@ end
         sender = params["entry"][0]["messaging"][0]["sender"]["id"]
         @session = find_or_create_session(sender)
         @session.last_exchange = Time.now
-        puts @session
-       client.run_actions @session.id, msg, @session.context
+        puts "Context: #{@session.context}"
+        client.run_actions @session.id, msg, @session.context
     end
   end
 end
