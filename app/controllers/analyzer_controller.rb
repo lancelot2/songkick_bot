@@ -115,7 +115,7 @@ end
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
         p context
-        @products = RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&vendor=#{context['brand']}&product_type=#{context['style']}"
+        @products = RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?product_type=#{context['style']}"
         JSON.parse(@products)["products"].each do |h1|
           request_params =  {
               recipient: {id: 1006889982732663},
