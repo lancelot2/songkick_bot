@@ -89,7 +89,7 @@ end
         @session = Session.find(session_id)
         p context
         if entities["gender"]
-          if entities["gender"].downcase = "men"
+          if entities["gender"].first["value"].downcase = "men"
             context["gender"] = 263046279
           else
             context["gender"] = 263046151
