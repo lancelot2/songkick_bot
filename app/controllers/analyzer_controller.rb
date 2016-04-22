@@ -67,6 +67,8 @@ end
     @actions = {
       :say => -> (session_id, context, msg) {
         @session = Session.find(session_id)
+        @session.context = context
+        @session.save
         fb_request(@session.facebook_id, msg)
       },
       :merge => -> (session_id, context, entities, msg) {
@@ -85,6 +87,7 @@ end
           context["style"] = entities["style"].first["value"]
         end
         @session.context = context
+        @session.save
         p context
         return context
       },
