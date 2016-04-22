@@ -106,6 +106,7 @@ end
 
         @session.context = context
         @session.save
+        p context
         return context
       },
       :error => -> (session_id, context, error) {
