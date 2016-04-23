@@ -54,7 +54,7 @@ end
     @sessions = Session.all
     if @sessions.find_by facebook_id: fbid
       @session = @sessions.find_by facebook_id: fbid
-      if ((Time.now - @session.last_exchange).fdiv(60)).to_i > 15
+      if ((Time.now - @session.last_exchange).fdiv(60)).to_i > 5
         @session = Session.new
         @session.facebook_id = fbid
         @session.context = {}
@@ -94,7 +94,11 @@ end
         end
 
         if entities["gender"]
-          context["gender"] = entities["gender"].first["value"]
+          if entities["gender"].first["value"] == "men"
+            context["gender"] = 263046279
+          elsif entities["gender"].first["value"] == "wom"
+            context["gender"] = 263046151
+          end
         end
 
         if entities["brand"]
@@ -132,12 +136,12 @@ end
                       {
                       "type":"postback",
                       "title":"Women",
-                      "payload":"263046151"
+                      "payload":"wom"
                     },
                     {
                       "type":"postback",
                       "title":"Men",
-                      "payload":"263046279"
+                      "payload":"men"
                     }
 
                   ]
