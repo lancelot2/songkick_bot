@@ -117,8 +117,8 @@ end
 
     @products = Oj.load(RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279')
     @products["products"].each do |h1|
-          fb_request(1006889982732663, "hola")
-      p h1["title"]
+          fb_request(1006889982732663, h1["title"])
+         # fb_structured_request(1006889982732663, request_params)
     end
 
         return context
