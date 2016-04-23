@@ -89,8 +89,12 @@ end
         p context
         p entities
 
-        if entities["number"]
-          context["gender"] = entities["number"].first["value"]
+        if entities["shoes_id"]
+          context["stock_left"] = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products/#{entities['shoes_id'].first['value']}.json?fields=variants")["product"]["variants"].first["old_inventory_quantity"]
+        end
+
+        if entities["gender"]
+          context["gender"] = entities["gender"].first["value"]
         end
 
         if entities["brand"]
