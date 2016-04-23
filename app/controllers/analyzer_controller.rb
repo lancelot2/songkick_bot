@@ -71,9 +71,9 @@ end
     @session
   end
 
-  def test(text)
-   p text
-  end
+  # def test(text)
+  #  p text
+  # end
 
 
   def webhook_post
