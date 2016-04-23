@@ -54,12 +54,12 @@ end
     @sessions = Session.all
     if @sessions.find_by facebook_id: fbid
       @session = @sessions.find_by facebook_id: fbid
-      if (Time.now - @session.last_exchange).fdiv(60) > 15
-        @session = Session.new
-        @session.facebook_id = fbid
-        @session.context = {}
-        @session.save
-      end
+      # if (Time.now - @session.last_exchange).fdiv(60) > 15
+      #   @session = Session.new
+      #   @session.facebook_id = fbid
+      #   @session.context = {}
+      #   @session.save
+      # end
       sessionId = @session.id
       @session
     else
