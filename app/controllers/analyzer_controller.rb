@@ -98,7 +98,7 @@ end
             "type":"template",
             "payload":{
               "template_type":"button",
-               "text": "Is it for men or women ?",
+               "text": "Hi #{@user["first_name"]}! Is it for men or women ?",
 
                   "buttons":[
                       {
