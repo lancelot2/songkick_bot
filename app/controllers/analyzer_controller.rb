@@ -173,14 +173,16 @@ end
     }
 
     client = Wit.new access_token, @actions
-    unless  params["entry"][0]["messaging"][0]["delivery"]
+    if  params["entry"][0]["messaging"][0]["delivery"].nil?
         msg = params["entry"][0]["messaging"][0]["message"]["text"]
         sender = params["entry"][0]["messaging"][0]["sender"]["id"]
         @session = find_or_create_session(sender)
         @session.last_exchange = Time.now
         @session.save
         client.run_actions @session.id, msg, @session.context
-    end
+   elsif
+      puts postback_response = sender = params["entry"][0]["messaging"][0]["postback"]["payload"]
+  end
   end
 end
 
