@@ -93,14 +93,17 @@ end
           else
             context["gender"] = 263046151
           end
+          p context
         end
 
         if entities["brand"]
           context["brand"] = entities["brand"].first["value"]
+           p context
         end
 
         if entities["style"]
           context["style"] = entities["style"].first["value"]
+           p context
         end
 
         @session.context = context
@@ -113,7 +116,7 @@ end
       },
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
-        @products = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279&product_type=#{context['style']}")
+        @products = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
         request_params =  {
             recipient: {id: @session.facebook_id},
             message: {
