@@ -119,11 +119,11 @@ end
     @products = Oj.load(RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279')
     @products["products"].each do |h1|
       p h1["title"]
-        request_params =  {
-    recipient: {id: 1006889982732663},
-    message: {text: "hello"},
-    access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
-  }
+  #       request_params =  {
+  #   recipient: {id: 1006889982732663},
+  #   message: {text: "hello"},
+  #   access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
+  # }
       # request_params =  {
       #         recipient: {id: 1006889982732663},
       #         message: {
@@ -160,7 +160,7 @@ end
       #       },
       #         access_token: token }
       p "before sending"
-      fb_structured_request(@session.facebook_id, request_params)
+      fb_request(@session.facebook_id, h1["title"])
       p 'after sending'
     end
 
