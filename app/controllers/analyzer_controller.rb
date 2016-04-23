@@ -180,7 +180,7 @@ end
         @session.last_exchange = Time.now
         @session.save
         client.run_actions @session.id, msg, @session.context
-   elsif
+   elsif params["entry"][0]["messaging"][0]["postback"]
       puts postback_response = sender = params["entry"][0]["messaging"][0]["postback"]["payload"]
   end
   end
