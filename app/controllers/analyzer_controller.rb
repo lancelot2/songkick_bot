@@ -88,38 +88,6 @@ end
         @session = Session.find(session_id)
         p @session.id
         p context
-        if entities["greeting"]
-          @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name,last_name,profile_pic&access_token=#{fb_token}")
-          context["username"] = @user["first_name"]
-          request_params =  {
-          recipient: {id: 1006889982732663},
-          message: {
-          "attachment":{
-            "type":"template",
-            "payload":{
-              "template_type":"button",
-               "text": "Hi #{@user["first_name"]}! Is it for men or women ?",
-
-                  "buttons":[
-                      {
-                      "type":"postback",
-                      "title":"Women",
-                      "payload":263046151
-                    },
-                    {
-                      "type":"postback",
-                      "title":"Men",
-                      "payload":263046279
-                    }
-
-                  ]
-            }
-          }
-        },
-          access_token: fb_token
-        }
-          fb_structured_request(@session.facebook_id, request_params)
-        end
 
         if entities["number"]
           context["gender"] = entities["number"].first["value"]
@@ -142,6 +110,39 @@ end
       },
       :error => -> (session_id, context, error) {
         p 'Oops I don\'t know what to do.'
+      },
+      :get_gender => -> (session_id, context) {
+        @session = Session.find(session_id)
+        @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name,last_name,profile_pic&access_token=#{fb_token}")
+          context["username"] = @user["first_name"]
+          request_params =  {
+          recipient: {id: 1006889982732663},
+          message: {
+          "attachment":{
+            "type":"template",
+            "payload":{
+              "template_type":"button",
+               "text": "Is it for men or women ?",
+
+                  "buttons":[
+                      {
+                      "type":"postback",
+                      "title":"Women",
+                      "payload":263046151
+                    },
+                    {
+                      "type":"postback",
+                      "title":"Men",
+                      "payload":263046279
+                    }
+
+                  ]
+            }
+          }
+        },
+          access_token: fb_token
+        }
+          fb_structured_request(@session.facebook_id, request_params)
       },
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
