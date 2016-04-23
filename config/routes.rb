@@ -16,5 +16,7 @@ Rails.application.routes.draw do
   get 'telegram/reception' => 'telegram#reception'
   get 'req' => 'analyzer#req'
   get 'shopify/req' => 'shopify#req'
+
+  get 'test' => 'analyzer#test'
 end
 
