@@ -37,7 +37,7 @@ end
  def fb_structured_request(recipient_id, request_params)
   token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
   url = "https://graph.facebook.com/v2.6/me/messages?"
-
+  p "while sending"
   uri = URI.parse(url)
 
   response = Net::HTTP.new(uri.host, uri.port)
@@ -119,42 +119,49 @@ end
     @products = Oj.load(RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279')
     @products["products"].each do |h1|
       p h1["title"]
-      request_params =  {
-              recipient: {id: 1006889982732663},
-              message: {
-              "attachment":{
-                "type":"template",
-                "payload":{
-                  "template_type":"generic",
-                  "elements":[
-                    {
-                       "title":  h1["title"] ,
-                       "image_url": h1["images"].first["src"],
-                       "subtitle": "Soft white cotton t-shirt is back in style",
-                      "buttons":[
-                        {
-                          "type":"web_url",
-                          "url":"https://petersapparel.parseapp.com/view_item?item_id=100",
-                          "title":"More info"
-                        },
-                        {
-                          "type":"web_url",
-                          "url":"https://petersapparel.parseapp.com/buy_item?item_id=100",
-                          "title":"Check stock"
-                        },
-                        {
-                          "type":"postback",
-                          "title":"Similar products",
-                          "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM100"
-                        }
-                      ]
-                    },
-                  ]
-                }
-              }
-            },
-              access_token: token }
+        request_params =  {
+    recipient: {id: recipient_id},
+    message: {text: msg},
+    access_token: token
+  }
+      # request_params =  {
+      #         recipient: {id: 1006889982732663},
+      #         message: {
+      #         "attachment":{
+      #           "type":"template",
+      #           "payload":{
+      #             "template_type":"generic",
+      #             "elements":[
+      #               {
+      #                  "title":  h1["title"] ,
+      #                  "image_url": h1["images"].first["src"],
+      #                  "subtitle": "Soft white cotton t-shirt is back in style",
+      #                 "buttons":[
+      #                   {
+      #                     "type":"web_url",
+      #                     "url":"https://petersapparel.parseapp.com/view_item?item_id=100",
+      #                     "title":"More info"
+      #                   },
+      #                   {
+      #                     "type":"web_url",
+      #                     "url":"https://petersapparel.parseapp.com/buy_item?item_id=100",
+      #                     "title":"Check stock"
+      #                   },
+      #                   {
+      #                     "type":"postback",
+      #                     "title":"Similar products",
+      #                     "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM100"
+      #                   }
+      #                 ]
+      #               },
+      #             ]
+      #           }
+      #         }
+      #       },
+      #         access_token: token }
+      p "before sending"
       fb_structured_request(@session.facebook_id, request_params)
+      p 'after sending'
     end
 
 
