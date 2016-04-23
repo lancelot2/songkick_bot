@@ -86,8 +86,8 @@ end
       },
       :merge => -> (session_id, context, entities, msg) {
         @session = Session.find(session_id)
-        p @session.id
         p context
+        p entities
 
         if entities["number"]
           context["gender"] = entities["number"].first["value"]
@@ -174,8 +174,8 @@ end
                 "title":"More info"
               },
               {
-                "type":"web_url",
-                "url":"https://petersapparel.parseapp.com/buy_item?item_id=101",
+                "type":"postback",
+                "payload": h1["id"],
                 "title":"Check stock"
               },
               {
