@@ -158,8 +158,10 @@ end
 
 
         end
-        context = {}
         fb_structured_request(@session.facebook_id, request_params)
+        context = {}
+        @session.context = context
+        @session.save
         return context
       }
     }
