@@ -76,7 +76,6 @@ end
 
 
     recipientId = 0
-    @actions = {}
     @actions = {
       :say => -> (session_id, context, msg) {
         @session = Session.find(session_id)
@@ -86,6 +85,7 @@ end
       },
       :merge => -> (session_id, context, entities, msg) {
         @session = Session.find(session_id)
+        p @session.id
         p context
         if entities["gender"]
           if entities["gender"].first["value"] = "men"
