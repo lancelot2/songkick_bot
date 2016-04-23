@@ -220,7 +220,7 @@ end
         @session.last_exchange = Time.now
         @session.save
         client.run_actions @session.id, msg, @session.context
-    elsif params["entry"][0]["messaging"][0]["postback"]["payload"]
+    elsif params["entry"][0]["messaging"][0]["postback"]
       postback_response = params["entry"][0]["messaging"][0]["postback"]["payload"]
       sender = params["entry"][0]["messaging"][0]["sender"]["id"]
       @session = find_or_create_session(sender)
