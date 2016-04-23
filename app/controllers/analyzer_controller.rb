@@ -111,10 +111,6 @@ end
       :error => -> (session_id, context, error) {
         p 'Oops I don\'t know what to do.'
       },
-      :verify_stock => -> (session_id, context) {
-        p "verifying stock"
-        return context
-      },
       :get_gender => -> (session_id, context) {
         @session = Session.find(session_id)
         @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name,last_name,profile_pic&access_token=#{fb_token}")
