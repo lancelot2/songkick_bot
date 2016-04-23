@@ -114,7 +114,7 @@ end
         p 'Oops I don\'t know what to do.'
       },
       :run_query => -> (session_id, context) {
-
+        p "hey"
         return context
       }
     }
