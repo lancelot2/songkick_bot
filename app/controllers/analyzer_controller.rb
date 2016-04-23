@@ -92,7 +92,8 @@ end
           @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name,last_name,profile_pic&access_token=#{fb_token}")
           context["username"] = @user["first_name"]
         end
-
+        p "heeee"
+        p entities
         if entities["number"]
           p entities["number"]
 
