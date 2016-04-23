@@ -91,7 +91,7 @@ end
         if entities["gender"]
           if entities["gender"].first["value"] = "men"
             context["gender"] = 263046279
-          else
+          elsif entities["gender"].first["value"] = "women"
             context["gender"] = 263046151
           end
           p context
