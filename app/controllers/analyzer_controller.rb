@@ -61,6 +61,7 @@ end
         @session.save
       end
       sessionId = @session.id
+      @session
     else
       @session = Session.new
       @session.facebook_id = fbid
