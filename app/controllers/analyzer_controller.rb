@@ -92,14 +92,9 @@ end
           @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name,last_name,profile_pic&access_token=#{fb_token}")
           context["username"] = @user["first_name"]
         end
-        p "heeee"
-        p entities
+
         if entities["number"]
-          p entities["number"]
-
-            context["gender"] = entities["number"].first["value"]
-
-          p context
+          context["gender"] = entities["number"].first["value"]
         end
 
         if entities["brand"]
@@ -179,7 +174,7 @@ end
         @session.last_exchange = Time.now
         @session.save
         client.run_actions @session.id, msg, @session.context
-    elsif params["entry"][0]["messaging"][0]["postback"]
+   elsif params["entry"][0]["messaging"][0]["postback"]
       postback_response = params["entry"][0]["messaging"][0]["postback"]["payload"]
       sender = params["entry"][0]["messaging"][0]["sender"]["id"]
       @session = find_or_create_session(sender)
