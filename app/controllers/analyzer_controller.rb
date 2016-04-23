@@ -116,7 +116,7 @@ end
             }
           }
         },
-          access_token: token
+          access_token: fb_token
         }
           fb_structured_request(@session.facebook_id, request_params)
         end
