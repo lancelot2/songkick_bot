@@ -130,9 +130,9 @@ end
           }
         @products["products"].each do |h1|
           #fb_request(1006889982732663, h1["title"])
-        request_params[:message][:attachment][:payload][:elements] << { "title":h1["title"],
-            "image_url":["images"].first["src"],
-            "subtitle":"Soft gray cotton t-shirt is back in style",
+        request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
+            "image_url": h1["images"].first["src"],
+            "subtitle":"",
             "buttons":[
               {
                 "type":"web_url",
