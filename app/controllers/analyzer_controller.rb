@@ -119,46 +119,6 @@ end
     # @products["products"].each do |h1|
     #   p h1["title"]
     # end
-  #       request_params =  {
-  #   recipient: {id: 1006889982732663},
-  #   message: {text: "hello"},
-  #   access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
-  # }
-      # request_params =  {
-      #         recipient: {id: 1006889982732663},
-      #         message: {
-      #         "attachment":{
-      #           "type":"template",
-      #           "payload":{
-      #             "template_type":"generic",
-      #             "elements":[
-      #               {
-      #                  "title":  h1["title"] ,
-      #                  "image_url": h1["images"].first["src"],
-      #                  "subtitle": "Soft white cotton t-shirt is back in style",
-      #                 "buttons":[
-      #                   {
-      #                     "type":"web_url",
-      #                     "url":"https://petersapparel.parseapp.com/view_item?item_id=100",
-      #                     "title":"More info"
-      #                   },
-      #                   {
-      #                     "type":"web_url",
-      #                     "url":"https://petersapparel.parseapp.com/buy_item?item_id=100",
-      #                     "title":"Check stock"
-      #                   },
-      #                   {
-      #                     "type":"postback",
-      #                     "title":"Similar products",
-      #                     "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM100"
-      #                   }
-      #                 ]
-      #               },
-      #             ]
-      #           }
-      #         }
-      #       },
-      #         access_token: token }
 
         return context
       }
