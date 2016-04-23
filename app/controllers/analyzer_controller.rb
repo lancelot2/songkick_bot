@@ -132,12 +132,12 @@ end
                       {
                       "type":"postback",
                       "title":"Women",
-                      "payload":263046151
+                      "payload":"263046151"
                     },
                     {
                       "type":"postback",
                       "title":"Men",
-                      "payload":263046279
+                      "payload":"263046279"
                     }
 
                   ]
