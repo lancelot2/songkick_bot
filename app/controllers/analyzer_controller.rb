@@ -75,7 +75,8 @@ end
   def webhook_post
     access_token = "KVGTTJ5B3PRINRMAZNPWN25E3YVT6QKB"
 
-
+    @products = Oj.load(RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279')
+    p @products
     recipientId = 0
     @actions = {}
     @actions = {
@@ -115,8 +116,7 @@ end
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
         p context
-        @products = Oj.load(RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279')
-        p @products
+
         # JSON.parse(@products)["products"].each do |h1|
         #   p h1["title"]
           # request_params =  {
