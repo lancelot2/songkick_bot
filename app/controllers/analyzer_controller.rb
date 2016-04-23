@@ -74,7 +74,7 @@ end
 
   def webhook_post
     access_token = "KVGTTJ5B3PRINRMAZNPWN25E3YVT6QKB"
-
+    fb_token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
 
     recipientId = 0
     @actions = {
@@ -88,7 +88,13 @@ end
         @session = Session.find(session_id)
         p @session.id
         p context
+        if entities["greeting"]
+          @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name,last_name,profile_pic&access_token=#{fb_token}")
+          context["username"] = @user["first_name"]
+        end
+
         if entities["gender"]
+          p entities["gender"]
           if entities["gender"].first["value"] = "men"
             context["gender"] = 263046279
           elsif entities["gender"].first["value"] = "women"
