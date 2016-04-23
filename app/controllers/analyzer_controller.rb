@@ -115,7 +115,11 @@ end
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
         @products = Oj.load(RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279')
-        request_params =  {
+
+
+        @products["products"].each do |h1|
+          #fb_request(1006889982732663, h1["title"])
+          request_params =  {
         recipient: {id: 1006889982732663},
         message: {
         "attachment":{
@@ -151,9 +155,6 @@ end
       },
         access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
       }
-
-        @products["products"].each do |h1|
-          #fb_request(1006889982732663, h1["title"])
           fb_structured_request(1006889982732663, request_params)
         end
 
