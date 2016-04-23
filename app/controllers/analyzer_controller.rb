@@ -96,8 +96,6 @@ end
       },
       :merge => -> (session_id, context, entities, msg) {
         @session = Session.find(session_id)
-        p context
-        p entities
 
         if entities["shoes_id"]
           context["stock_left"] = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products/#{entities['shoes_id'].first['value']}.json?fields=variants")["product"]["variants"].first["old_inventory_quantity"]
@@ -160,7 +158,7 @@ end
         },
           access_token: fb_token
         }
-        fb_structured_request(@session.facebook_id, request_params)
+        # fb_structured_request(@session.facebook_id, request_params)
         return context
       },
       :run_query => -> (session_id, context) {
