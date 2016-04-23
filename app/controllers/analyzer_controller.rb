@@ -79,10 +79,20 @@ end
     recipientId = 0
     @actions = {
       :say => -> (session_id, context, msg) {
-        @session = Session.find(session_id)
-        @session.context = context
-        @session.save
-        fb_request(@session.facebook_id, msg)
+        if context["stock_left"]
+          @session = Session.find(session_id)
+          @session.context = context
+          @session.save
+          fb_request(@session.facebook_id, msg)
+          context = {}
+          @session.context = context
+          @session.save
+        else
+          @session = Session.find(session_id)
+          @session.context = context
+          @session.save
+          fb_request(@session.facebook_id, msg)
+        end
       },
       :merge => -> (session_id, context, entities, msg) {
         @session = Session.find(session_id)
