@@ -77,7 +77,7 @@ end
 
     @products = Oj.load(RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279')
     @products["products"].each do |h1|
-      h1["title"]
+      p h1["title"]
     end
 
     recipientId = 0
