@@ -93,13 +93,11 @@ end
           context["username"] = @user["first_name"]
         end
 
-        if entities["gender"]
-          p entities["gender"]
-          if entities["gender"].first["value"] = "men"
-            context["gender"] = 263046279
-          elsif entities["gender"].first["value"] = "women"
-            context["gender"] = 263046151
-          end
+        if entities["number"]
+          p entities["number"]
+
+            context["gender"] = entities["number"].first["value"]
+
           p context
         end
 
@@ -180,9 +178,14 @@ end
         @session.last_exchange = Time.now
         @session.save
         client.run_actions @session.id, msg, @session.context
-   elsif params["entry"][0]["messaging"][0]["postback"]
-      puts postback_response = sender = params["entry"][0]["messaging"][0]["postback"]["payload"]
-  end
+    elsif params["entry"][0]["messaging"][0]["postback"]
+      postback_response = params["entry"][0]["messaging"][0]["postback"]["payload"]
+      sender = params["entry"][0]["messaging"][0]["sender"]["id"]
+      @session = find_or_create_session(sender)
+      @session.last_exchange = Time.now
+      @session.save
+      client.run_actions @session.id, postback_response, @session.context
+    end
   end
 end
 
