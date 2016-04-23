@@ -8,6 +8,7 @@ gem 'pg', '~> 0.15'
 gem 'redis'
 gem 'rack-cors', :require => 'rack/cors'
 gem "browser"
+gem 'oj'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets

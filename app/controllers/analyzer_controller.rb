@@ -115,8 +115,10 @@ end
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
         p context
-        @products = RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279&vendor=addidas&product_typ=running'
-        p JSON.parse(@products)
+        @products = Oj.load(RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279')
+         @products["products"].each do |h1|
+          p h1["title"]
+         end
         # JSON.parse(@products)["products"].each do |h1|
         #   p h1["title"]
           # request_params =  {
