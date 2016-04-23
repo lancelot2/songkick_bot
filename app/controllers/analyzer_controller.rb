@@ -142,7 +142,8 @@ end
         },
           access_token: fb_token
         }
-          fb_structured_request(@session.facebook_id, request_params)
+        fb_structured_request(@session.facebook_id, request_params)
+        return context
       },
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
