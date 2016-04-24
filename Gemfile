@@ -28,6 +28,7 @@ gem 'wit', '~> 3.3'
 gem 'telegram-bot-ruby'
 gem 'twilio-ruby'
 gem 'rest-client', '~> 1.8'
+gem 'treat', '~> 2.1'
 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc

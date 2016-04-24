@@ -5,6 +5,7 @@ class ShopifyController < ApplicationController
   def req
    @products = Oj.load(RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products/6192741639.json?fields=variants')
    @collection = RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/custom_collections/263046279.json'
+   #@s = sentence 'Those who dream by day know most.'
   end
 
 end
