@@ -216,7 +216,10 @@ end
     client = Wit.new access_token, @actions
     p "PARAMS:"
     p params
-    if params["entry"][0]["messaging"][0]["delivery"].nil? && params["entry"][0]["messaging"][0]["postback"].nil?
+    if params["entry"][0]["messaging"][0]["delivery"]["watermark"]
+      p params["entry"][0]["messaging"][0]["delivery"]["watermark"]
+      return
+    elsif params["entry"][0]["messaging"][0]["delivery"].nil? && params["entry"][0]["messaging"][0]["postback"].nil?
         msg = params["entry"][0]["messaging"][0]["message"]["text"]
         sender = params["entry"][0]["messaging"][0]["sender"]["id"]
         @session = find_or_create_session(sender)
