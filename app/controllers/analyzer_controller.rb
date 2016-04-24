@@ -6,13 +6,8 @@ class AnalyzerController < ApplicationController
     render :json => params["hub.challenge"]
   end
 
-  def req
-    @products = RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=263046279&vendor=nike&product_type=lifestyle'
-    @collection = RestClient.get 'https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/custom_collections/263046279.json'
-  end
-
   def fb_request(recipient_id, msg)
-  token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
+  token = ENV["page_token"]
   url = "https://graph.facebook.com/v2.6/me/messages?"
 
   request_params =  {
@@ -75,7 +70,7 @@ end
 
   def webhook_post
     access_token = "KVGTTJ5B3PRINRMAZNPWN25E3YVT6QKB"
-    fb_token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
+    fb_token = ENV["page_token"]
 
     recipientId = 0
     @actions = {
@@ -177,7 +172,7 @@ end
               }
             }
           },
-            access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
+            access_token: ENV["page_token"]
           }
         @products["products"].each do |h1|
           #fb_request(1006889982732663, h1["title"])
@@ -216,10 +211,8 @@ end
     client = Wit.new access_token, @actions
     p "PARAMS:"
     p params
-    if params["entry"][0]["messaging"][0]["delivery"]["watermark"]
-      p params["entry"][0]["messaging"][0]["delivery"]["watermark"]
-      return
-    elsif params["entry"][0]["messaging"][0]["delivery"].nil? && params["entry"][0]["messaging"][0]["postback"].nil?
+
+    if params["entry"][0]["messaging"][0]["delivery"].nil? && params["entry"][0]["messaging"][0]["postback"].nil?
         msg = params["entry"][0]["messaging"][0]["message"]["text"]
         sender = params["entry"][0]["messaging"][0]["sender"]["id"]
         @session = find_or_create_session(sender)
