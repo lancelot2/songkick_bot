@@ -21,8 +21,10 @@ class AnalyzerController < ApplicationController
 
   def find_or_create_session(fbid)
     if (@session = Session.find_by facebook_id: fbid) && @session.is_fresh
+      p "FOUND"
       @session
     else
+      p "NEW SESSION"
       @session = Session.create(facebook_id: fbid, context: {})
     end
   end
