@@ -60,7 +60,7 @@ class AnalyzerController < ApplicationController
         @session = Session.find(session_id)
         @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name&access_token=#{ENV['fb_token']}")
         context["username"] = @user["first_name"]
-
+        p entities
         if entities["shoes_id"]
           context["stock_left"] = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{entities['shoes_id'].first['value']}.json?fields=variants")["product"]["variants"].first["old_inventory_quantity"]
         end
@@ -84,6 +84,7 @@ class AnalyzerController < ApplicationController
 
 
         @session.update(context: context)
+        p context
         return context
       },
       :error => -> (session_id, context, error) {
