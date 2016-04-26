@@ -92,7 +92,6 @@ end
           @session = Session.find(session_id)
           @session.context = context
           @session.save
-          fb_request(@session.facebook_id, msg)
         end
       },
       :merge => -> (session_id, context, entities, msg) {
