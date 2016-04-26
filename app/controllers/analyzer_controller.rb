@@ -11,26 +11,34 @@ class AnalyzerController < ApplicationController
   end
 
   def fb_request(recipient_id, msg)
-  request_params =  {
-    recipient: {id: recipient_id},
-    message: {text: msg},
-    access_token: ENV["fb_token"]
-  }
-  RestClient.post ENV["fb_url"], request_params.to_json, :content_type => :json, :accept => :json
-end
+    request_params = {
+      recipient: {id: recipient_id},
+      message: {text: msg},
+      access_token: ENV["fb_token"]
+    }
+    RestClient.post ENV["fb_url"], request_params.to_json, :content_type => :json, :accept => :json
+  end
 
   def find_or_create_session(fbid)
-    @sessions = Session.all
-    if @sessions.find_by facebook_id: fbid
-      @session = @sessions.find_by facebook_id: fbid
-      if @session.is_not_fresh
-        @session = Session.create(facebook_id: fbid, context: {})
-      end
+    if (@session = Session.find_by facebook_id: fbid) && @session.is_fresh
+      @session
     else
-       @session = Session.create(facebook_id: fbid, context: {})
+      @session = Session.create(facebook_id: fbid, context: {})
     end
-    @session
   end
+
+  # def find_or_create_session(fbid)
+  #   @sessions = Session.all
+  #   if @sessions.find_by facebook_id: fbid
+  #     @session = @sessions.find_by facebook_id: fbid
+  #     if @session.is_not_fresh
+  #       @session = Session.create(facebook_id: fbid, context: {})
+  #     end
+  #   else
+  #      @session = Session.create(facebook_id: fbid, context: {})
+  #   end
+  #   @session
+  # end
 
 
   def webhook_post
@@ -117,46 +125,45 @@ end
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
         @products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
-        request_params =  {
-            recipient: {id: @session.facebook_id},
-            message: {
-            "attachment":{
-              "type":"template",
-              "payload":{
-                "template_type":"generic",
-                "elements":[
-                ]
-              }
-            }
-          },
-            access_token: ENV["fb_token"]
-          }
-        @products["products"].each do |h1|
-        request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
-            "image_url": h1["images"].first["src"],
-            "subtitle":"",
-            "buttons":[
-              {
-                "type":"web_url",
-                "url":"https://petersapparel.parseapp.com/view_item?item_id=101",
-                "title":"More info"
-              },
-              {
-                "type":"postback",
-                "payload": h1["id"],
-                "title":"Check stock"
-              },
-              {
-                "type":"postback",
-                "title":"Similar items",
-                "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM101"
-              }
-            ]
-          }
-
-
-        end
-        send_request(request_params)
+        # request_params =  {
+        #     recipient: {id: @session.facebook_id},
+        #     message: {
+        #     "attachment":{
+        #       "type":"template",
+        #       "payload":{
+        #         "template_type":"generic",
+        #         "elements":[
+        #         ]
+        #       }
+        #     }
+        #   },
+        #     access_token: ENV["fb_token"]
+        #   }
+        # @products["products"].each do |h1|
+        # request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
+        #     "image_url": h1["images"].first["src"],
+        #     "subtitle":"",
+        #     "buttons":[
+        #       {
+        #         "type":"web_url",
+        #         "url":"https://petersapparel.parseapp.com/view_item?item_id=101",
+        #         "title":"More info"
+        #       },
+        #       {
+        #         "type":"postback",
+        #         "payload": h1["id"],
+        #         "title":"Check stock"
+        #       },
+        #       {
+        #         "type":"postback",
+        #         "title":"Similar items",
+        #         "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM101"
+        #       }
+        #     ]
+        #   }
+        #end
+        #send_request(request_params)
+        fb_request(@session.facebook_id, "Nike Air Force")
         return context
       }
     }
