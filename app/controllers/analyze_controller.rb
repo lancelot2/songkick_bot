@@ -172,6 +172,7 @@ class AnalyzeController < ApplicationController
 
     client = Wit.new access_token, @actions
     params = Oj.load(params)
+    p params
     if params["entry"][0]["messaging"][0]["delivery"].nil? && params["entry"][0]["messaging"][0]["postback"].nil?
       msg = params["entry"][0]["messaging"][0]["message"]["text"]
       sender = params["entry"][0]["messaging"][0]["sender"]["id"]

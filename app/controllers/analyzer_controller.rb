@@ -7,17 +7,7 @@ class AnalyzerController < ApplicationController
   end
 
   def send_request(url, request_params)
-    uri = URI.parse(url)
-
-    response = Net::HTTP.new(uri.host, uri.port)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-    request = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
-    request.body = request_params.to_json
-
-    http.request(request)
+    RestClient.post url, request_params.to_json, :content_type => :json, :accept => :json
   end
 
   def fb_request(recipient_id, msg)
@@ -28,18 +18,7 @@ class AnalyzerController < ApplicationController
     message: {text: msg},
     access_token: token
   }
-  uri = URI.parse(url)
-
-    response = Net::HTTP.new(uri.host, uri.port)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-    request = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
-    request.body = request_params.to_json
-
-    http.request(request)
-
+  RestClient.post url, request_params.to_json, :content_type => :json, :accept => :json
 end
 
  def fb_structured_request(recipient_id, request_params)
