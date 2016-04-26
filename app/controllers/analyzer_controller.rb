@@ -125,45 +125,45 @@ class AnalyzerController < ApplicationController
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
         @products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
-        # request_params =  {
-        #     recipient: {id: @session.facebook_id},
-        #     message: {
-        #     "attachment":{
-        #       "type":"template",
-        #       "payload":{
-        #         "template_type":"generic",
-        #         "elements":[
-        #         ]
-        #       }
-        #     }
-        #   },
-        #     access_token: ENV["fb_token"]
-        #   }
-        # @products["products"].each do |h1|
-        # request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
-        #     "image_url": h1["images"].first["src"],
-        #     "subtitle":"",
-        #     "buttons":[
-        #       {
-        #         "type":"web_url",
-        #         "url":"https://petersapparel.parseapp.com/view_item?item_id=101",
-        #         "title":"More info"
-        #       },
-        #       {
-        #         "type":"postback",
-        #         "payload": h1["id"],
-        #         "title":"Check stock"
-        #       },
-        #       {
-        #         "type":"postback",
-        #         "title":"Similar items",
-        #         "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM101"
-        #       }
-        #     ]
-        #   }
-        #end
-        #send_request(request_params)
-        fb_request(@session.facebook_id, "Nike Air Force")
+        request_params =  {
+            recipient: {id: @session.facebook_id},
+            message: {
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"generic",
+                "elements":[
+                ]
+              }
+            }
+          },
+            access_token: ENV["fb_token"]
+          }
+        @products["products"].each do |h1|
+        request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
+            "image_url": h1["images"].first["src"],
+            "subtitle":"",
+            "buttons":[
+              {
+                "type":"web_url",
+                "url":"https://petersapparel.parseapp.com/view_item?item_id=101",
+                "title":"More info"
+              },
+              {
+                "type":"postback",
+                "payload": h1["id"],
+                "title":"Check stock"
+              },
+              {
+                "type":"postback",
+                "title":"Similar items",
+                "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM101"
+              }
+            ]
+          }
+        end
+        send_request(request_params)
+        #fb_request(@session.facebook_id, "Nike Air Force")
         return context
       }
     }
