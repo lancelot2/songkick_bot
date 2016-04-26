@@ -169,6 +169,8 @@ class AnalyzerController < ApplicationController
         end
         send_request(request_params)
         #fb_request(@session.facebook_id, "Nike Air Force")
+        @previous_session = @session
+        @session = Session.create(facebook_id: @previous_session.facebook_id, context: {})
         return context
       }
     }
