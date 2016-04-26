@@ -50,11 +50,11 @@ end
       },
       :merge => -> (session_id, context, entities, msg) {
         @session = Session.find(session_id)
-        @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name&access_token=#{ENV["fb_token"]}")
+        @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name&access_token=#{ENV['fb_token']}")
         context["username"] = @user["first_name"]
 
         if entities["shoes_id"]
-          context["stock_left"] = Oj.load(RestClient.get "https://#{ENV["shopify_token"]}@myshopifybot.myshopify.com/admin/products/#{entities['shoes_id'].first['value']}.json?fields=variants")["product"]["variants"].first["old_inventory_quantity"]
+          context["stock_left"] = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{entities['shoes_id'].first['value']}.json?fields=variants")["product"]["variants"].first["old_inventory_quantity"]
         end
 
         if entities["gender"]
@@ -116,7 +116,7 @@ end
       },
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
-        @products = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
+        @products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
         request_params =  {
             recipient: {id: @session.facebook_id},
             message: {
@@ -129,10 +129,9 @@ end
               }
             }
           },
-            access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
+            access_token: ENV["fb_token"]
           }
         @products["products"].each do |h1|
-          #fb_request(1006889982732663, h1["title"])
         request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
             "image_url": h1["images"].first["src"],
             "subtitle":"",
@@ -158,9 +157,6 @@ end
 
         end
         send_request(request_params)
-        context = {}
-        @session.context = context
-        @session.save
         return context
       }
     }
