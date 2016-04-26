@@ -114,55 +114,55 @@ end
         send_request(request_params)
         return context
       },
-      # :run_query => -> (session_id, context) {
-      #   @session = Session.find(session_id)
-      #   @products = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
-      #   request_params =  {
-      #       recipient: {id: @session.facebook_id},
-      #       message: {
-      #       "attachment":{
-      #         "type":"template",
-      #         "payload":{
-      #           "template_type":"generic",
-      #           "elements":[
-      #           ]
-      #         }
-      #       }
-      #     },
-      #       access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
-      #     }
-      #   @products["products"].each do |h1|
-      #     #fb_request(1006889982732663, h1["title"])
-      #   request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
-      #       "image_url": h1["images"].first["src"],
-      #       "subtitle":"",
-      #       "buttons":[
-      #         {
-      #           "type":"web_url",
-      #           "url":"https://petersapparel.parseapp.com/view_item?item_id=101",
-      #           "title":"More info"
-      #         },
-      #         {
-      #           "type":"postback",
-      #           "payload": h1["id"],
-      #           "title":"Check stock"
-      #         },
-      #         {
-      #           "type":"postback",
-      #           "title":"Similar items",
-      #           "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM101"
-      #         }
-      #       ]
-      #     }
+      :run_query => -> (session_id, context) {
+        @session = Session.find(session_id)
+        @products = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
+        request_params =  {
+            recipient: {id: @session.facebook_id},
+            message: {
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"generic",
+                "elements":[
+                ]
+              }
+            }
+          },
+            access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
+          }
+        @products["products"].each do |h1|
+          #fb_request(1006889982732663, h1["title"])
+        request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
+            "image_url": h1["images"].first["src"],
+            "subtitle":"",
+            "buttons":[
+              {
+                "type":"web_url",
+                "url":"https://petersapparel.parseapp.com/view_item?item_id=101",
+                "title":"More info"
+              },
+              {
+                "type":"postback",
+                "payload": h1["id"],
+                "title":"Check stock"
+              },
+              {
+                "type":"postback",
+                "title":"Similar items",
+                "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM101"
+              }
+            ]
+          }
 
 
-      #   end
-      #   send_request(request_params)
-      #   context = {}
-      #   @session.context = context
-      #   @session.save
-      #   return context
-      # }
+        end
+        send_request(request_params)
+        context = {}
+        @session.context = context
+        @session.save
+        return context
+      }
     }
 
     client = Wit.new ENV["wit_token"], @actions
