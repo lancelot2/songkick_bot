@@ -50,6 +50,9 @@ end
       },
       :merge => -> (session_id, context, entities, msg) {
         @session = Session.find(session_id)
+        @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name&access_token=#{ENV["fb_token"]}")
+        context["username"] = @user["first_name"]
+
         if entities["shoes_id"]
           context["stock_left"] = Oj.load(RestClient.get "https://#{ENV["shopify_token"]}@myshopifybot.myshopify.com/admin/products/#{entities['shoes_id'].first['value']}.json?fields=variants")["product"]["variants"].first["old_inventory_quantity"]
         end
@@ -70,6 +73,8 @@ end
           context["style"] = entities["style"].first["value"]
         end
 
+
+
         @session.update(context: context)
         return context
       },
@@ -78,8 +83,7 @@ end
       },
       :get_gender => -> (session_id, context) {
         @session = Session.find(session_id)
-        @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name,last_name,profile_pic&access_token=#{ENV["fb_token"]}")
-          context["username"] = @user["first_name"]
+
           request_params =  {
           recipient: {id: @session.facebook_id},
           message: {
