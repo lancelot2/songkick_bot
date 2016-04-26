@@ -6,33 +6,24 @@ class AnalyzerController < ApplicationController
     render :json => params["hub.challenge"]
   end
 
-  def send_request(url, request_params)
-    RestClient.post url, request_params.to_json, :content_type => :json, :accept => :json
+  def send_request(request_params)
+    RestClient.post ENV["fb_url"], request_params.to_json, :content_type => :json, :accept => :json
   end
 
   def fb_request(recipient_id, msg)
-  token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
-  url = "https://graph.facebook.com/v2.6/me/messages?"
   request_params =  {
     recipient: {id: recipient_id},
     message: {text: msg},
-    access_token: token
+    access_token: ENV["fb_token"]
   }
-  RestClient.post url, request_params.to_json, :content_type => :json, :accept => :json
-end
-
- def fb_structured_request(recipient_id, request_params)
-  puts "STRUCTURED REQUEST"
-  token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
-  url = "https://graph.facebook.com/v2.6/me/messages?"
-  send_request(url, request_params)
+  RestClient.post ENV["fb_url"], request_params.to_json, :content_type => :json, :accept => :json
 end
 
   def find_or_create_session(fbid)
     @sessions = Session.all
     if @sessions.find_by facebook_id: fbid
       @session = @sessions.find_by facebook_id: fbid
-      if ((Time.now - @session.last_exchange).fdiv(60)).to_i > 5
+      if @session.is_not_fresh
         @session = Session.create(facebook_id: fbid, context: {})
       end
     else
@@ -43,8 +34,6 @@ end
 
 
   def webhook_post
-    access_token = "KVGTTJ5B3PRINRMAZNPWN25E3YVT6QKB"
-    fb_token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
     @actions = {
       :say => -> (session_id, context, msg) {
         if context["stock_left"]
@@ -61,7 +50,7 @@ end
       :merge => -> (session_id, context, entities, msg) {
         @session = Session.find(session_id)
         if entities["shoes_id"]
-          context["stock_left"] = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products/#{entities['shoes_id'].first['value']}.json?fields=variants")["product"]["variants"].first["old_inventory_quantity"]
+          context["stock_left"] = Oj.load(RestClient.get "https://#{ENV["shopify_token"]}@myshopifybot.myshopify.com/admin/products/#{entities['shoes_id'].first['value']}.json?fields=variants")["product"]["variants"].first["old_inventory_quantity"]
         end
 
         if entities["gender"]
@@ -88,7 +77,7 @@ end
       },
       :get_gender => -> (session_id, context) {
         @session = Session.find(session_id)
-        @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name,last_name,profile_pic&access_token=#{fb_token}")
+        @user = Oj.load(RestClient.get "https://graph.facebook.com/v2.6/#{@session.facebook_id}?fields=first_name,last_name,profile_pic&access_token=#{ENV["fb_token"]}")
           context["username"] = @user["first_name"]
           request_params =  {
           recipient: {id: @session.facebook_id},
@@ -115,9 +104,9 @@ end
             }
           }
         },
-          access_token: fb_token
+          access_token: ENV["fb_token"]
         }
-        fb_structured_request(@session.facebook_id, request_params)
+        send_request(request_params)
         return context
       },
       # :run_query => -> (session_id, context) {
@@ -163,7 +152,7 @@ end
 
 
       #   end
-      #   fb_structured_request(@session.facebook_id, request_params)
+      #   send_request(request_params)
       #   context = {}
       #   @session.context = context
       #   @session.save
@@ -171,7 +160,7 @@ end
       # }
     }
 
-    client = Wit.new access_token, @actions
+    client = Wit.new ENV["wit_token"], @actions
     if params["entry"][0]["messaging"][0]["delivery"].nil? && params["entry"][0]["messaging"][0]["postback"].nil?
       msg = params["entry"][0]["messaging"][0]["message"]["text"]
       sender = params["entry"][0]["messaging"][0]["sender"]["id"]
