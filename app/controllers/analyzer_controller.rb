@@ -23,13 +23,12 @@ class AnalyzerController < ApplicationController
   def fb_request(recipient_id, msg)
   token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
   url = "https://graph.facebook.com/v2.6/me/messages?"
-  p "REQUEST"
   request_params =  {
     recipient: {id: recipient_id},
     message: {text: msg},
     access_token: token
   }
-      uri = URI.parse(url)
+  uri = URI.parse(url)
 
     response = Net::HTTP.new(uri.host, uri.port)
     http = Net::HTTP.new(uri.host, uri.port)
@@ -98,7 +97,6 @@ end
       },
       :merge => -> (session_id, context, entities, msg) {
         @session = Session.find(session_id)
-
         if entities["shoes_id"]
           context["stock_left"] = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products/#{entities['shoes_id'].first['value']}.json?fields=variants")["product"]["variants"].first["old_inventory_quantity"]
         end
@@ -113,17 +111,15 @@ end
 
         if entities["brand"]
           context["brand"] = entities["brand"].first["value"]
-           p context
         end
 
         if entities["style"]
           context["style"] = entities["style"].first["value"]
-           p context
         end
 
         @session.context = context
         @session.save
-        p context
+        fb_request(@session.facebook_id, msg)
         return context
       },
       :error => -> (session_id, context, error) {
@@ -163,61 +159,58 @@ end
         fb_structured_request(@session.facebook_id, request_params)
         return context
       },
-      :run_query => -> (session_id, context) {
-        @session = Session.find(session_id)
-        @products = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
-        request_params =  {
-            recipient: {id: @session.facebook_id},
-            message: {
-            "attachment":{
-              "type":"template",
-              "payload":{
-                "template_type":"generic",
-                "elements":[
-                ]
-              }
-            }
-          },
-            access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
-          }
-        @products["products"].each do |h1|
-          #fb_request(1006889982732663, h1["title"])
-        request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
-            "image_url": h1["images"].first["src"],
-            "subtitle":"",
-            "buttons":[
-              {
-                "type":"web_url",
-                "url":"https://petersapparel.parseapp.com/view_item?item_id=101",
-                "title":"More info"
-              },
-              {
-                "type":"postback",
-                "payload": h1["id"],
-                "title":"Check stock"
-              },
-              {
-                "type":"postback",
-                "title":"Similar items",
-                "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM101"
-              }
-            ]
-          }
+      # :run_query => -> (session_id, context) {
+      #   @session = Session.find(session_id)
+      #   @products = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
+      #   request_params =  {
+      #       recipient: {id: @session.facebook_id},
+      #       message: {
+      #       "attachment":{
+      #         "type":"template",
+      #         "payload":{
+      #           "template_type":"generic",
+      #           "elements":[
+      #           ]
+      #         }
+      #       }
+      #     },
+      #       access_token: "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
+      #     }
+      #   @products["products"].each do |h1|
+      #     #fb_request(1006889982732663, h1["title"])
+      #   request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
+      #       "image_url": h1["images"].first["src"],
+      #       "subtitle":"",
+      #       "buttons":[
+      #         {
+      #           "type":"web_url",
+      #           "url":"https://petersapparel.parseapp.com/view_item?item_id=101",
+      #           "title":"More info"
+      #         },
+      #         {
+      #           "type":"postback",
+      #           "payload": h1["id"],
+      #           "title":"Check stock"
+      #         },
+      #         {
+      #           "type":"postback",
+      #           "title":"Similar items",
+      #           "payload":"USER_DEFINED_PAYLOAD_FOR_ITEM101"
+      #         }
+      #       ]
+      #     }
 
 
-        end
-        fb_structured_request(@session.facebook_id, request_params)
-        context = {}
-        @session.context = context
-        @session.save
-        return context
-      }
+      #   end
+      #   fb_structured_request(@session.facebook_id, request_params)
+      #   context = {}
+      #   @session.context = context
+      #   @session.save
+      #   return context
+      # }
     }
 
     client = Wit.new access_token, @actions
-    p "PARAMS:"
-    p params
-
     if params["entry"][0]["messaging"][0]["delivery"].nil? && params["entry"][0]["messaging"][0]["postback"].nil?
         msg = params["entry"][0]["messaging"][0]["message"]["text"]
         sender = params["entry"][0]["messaging"][0]["sender"]["id"]
