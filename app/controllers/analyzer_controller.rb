@@ -124,6 +124,9 @@ class AnalyzerController < ApplicationController
       },
       :run_query => -> (session_id, context) {
         @session = Session.find(session_id)
+        p context['gender']
+        p context['brand']
+        p context['style']
         @products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
         request_params =  {
             recipient: {id: @session.facebook_id},
@@ -140,6 +143,7 @@ class AnalyzerController < ApplicationController
             access_token: ENV["fb_token"]
           }
         @products["products"].each do |h1|
+          p h1["title"]
         request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
             "image_url": h1["images"].first["src"],
             "subtitle":"",
