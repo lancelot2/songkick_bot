@@ -97,20 +97,20 @@
 #       }
 #     }
 
-#     client = Wit.new ENV["wit_token"], @actions
-#     if params["entry"][0]["messaging"][0]["delivery"].nil? && params["entry"][0]["messaging"][0]["postback"].nil?
-#       msg = params["entry"][0]["messaging"][0]["message"]["text"]
-#       sender = params["entry"][0]["messaging"][0]["sender"]["id"]
-#       @session = find_or_create_session(sender)
-#       @session.update(last_exchange: Time.now)
-#       client.run_actions @session.id, msg, @session.context
-#     elsif params["entry"][0]["messaging"][0]["postback"]
-#       postback_response = params["entry"][0]["messaging"][0]["postback"]["payload"]
-#       sender = params["entry"][0]["messaging"][0]["sender"]["id"]
-#       @session = find_or_create_session(sender)
-#       @session.update(last_exchange: Time.now)
-#       client.run_actions @session.id, postback_response, @session.context
-#     end
+    # client = Wit.new ENV["wit_token"], @actions
+    # if params["entry"][0]["messaging"][0]["delivery"].nil? && params["entry"][0]["messaging"][0]["postback"].nil?
+    #   msg = params["entry"][0]["messaging"][0]["message"]["text"]
+    #   sender = params["entry"][0]["messaging"][0]["sender"]["id"]
+    #   @session = find_or_create_session(sender)
+    #   @session.update(last_exchange: Time.now)
+    #   client.run_actions @session.id, msg, @session.context
+    # elsif params["entry"][0]["messaging"][0]["postback"]
+    #   postback_response = params["entry"][0]["messaging"][0]["postback"]["payload"]
+    #   sender = params["entry"][0]["messaging"][0]["sender"]["id"]
+    #   @session = find_or_create_session(sender)
+    #   @session.update(last_exchange: Time.now)
+    #   client.run_actions @session.id, postback_response, @session.context
+    # end
 #   end
 # end
 
