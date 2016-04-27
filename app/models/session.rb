@@ -5,7 +5,4 @@ class Session < ActiveRecord::Base
     self.last_exchange = Time.now
   end
 
-  def is_fresh
-    ((Time.now - self.last_exchange).fdiv(60)).to_i < 5
-  end
 end
