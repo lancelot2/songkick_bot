@@ -43,7 +43,10 @@ class MessengerBotController < ActionController::Base
         p context['gender']
         p context['brand']
         p context['style']
-
+        products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
+        products["products"].each do |h1|
+          sender.reply({ text: h1["title"] })
+        end
         return context
       }
     }
