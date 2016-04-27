@@ -20,7 +20,7 @@ class AnalyzerController < ApplicationController
   end
 
   def find_or_create_session(fbid)
-    if (@session = Session.find_by facebook_id: fbid) &&  ((Time.now - @session.last_exchange).fdiv(60)).to_i < 5
+    if @session = Session.find_by facebook_id: fbid
       p "FOUND"
       @session
     else
