@@ -20,7 +20,7 @@ class AnalyzerController < ApplicationController
   end
 
   def find_or_create_session(fbid)
-    if @session = Session.find_by facebook_id: fbid
+    if (@session = Session.find_by facebook_id: fbid)
       p "FOUND"
       @session
     else
