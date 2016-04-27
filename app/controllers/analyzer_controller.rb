@@ -1,33 +1,33 @@
-# class AnalyzerController < ApplicationController
-#   skip_before_action :authenticate_user!, only: [:webhook, :webhook_post, :fb_request, :find_or_create_session]
-#   skip_before_action :verify_authenticity_token, only: [:webhook_post, :webhook, :fb_request, :find_or_create_session]
+# # class AnalyzerController < ApplicationController
+# #   skip_before_action :authenticate_user!, only: [:webhook, :webhook_post, :fb_request, :find_or_create_session]
+# #   skip_before_action :verify_authenticity_token, only: [:webhook_post, :webhook, :fb_request, :find_or_create_session]
 
-#   def webhook
-#     render :json => params["hub.challenge"]
-#   end
+# #   def webhook
+# #     render :json => params["hub.challenge"]
+# #   end
 
-#   def send_request(request_params)
-#     RestClient.post ENV["fb_url"], request_params.to_json, :content_type => :json, :accept => :json
-#   end
+#   # def send_request(request_params)
+#   #   RestClient.post ENV["fb_url"], request_params.to_json, :content_type => :json, :accept => :json
+#   # end
 
-#   def fb_request(recipient_id, msg)
-#     request_params = {
-#       recipient: {id: recipient_id},
-#       message: {text: msg},
-#       access_token: ENV["fb_token"]
-#     }
-#     RestClient.post ENV["fb_url"], request_params.to_json, :content_type => :json, :accept => :json
-#   end
+#   # def fb_request(recipient_id, msg)
+#   #   request_params = {
+#   #     recipient: {id: recipient_id},
+#   #     message: {text: msg},
+#   #     access_token: ENV["fb_token"]
+#   #   }
+#   #   RestClient.post ENV["fb_url"], request_params.to_json, :content_type => :json, :accept => :json
+#   # end
 
-#   def find_or_create_session(fbid)
-#     if (@session = Session.find_by facebook_id: fbid)
-#       p "FOUND"
-#       @session
-#     else
-#       p "NEW SESSION"
-#       @session = Session.create(facebook_id: fbid, context: {})
-#     end
-#   end
+#   # def find_or_create_session(fbid)
+#   #   if (@session = Session.find_by facebook_id: fbid)
+#   #     p "FOUND"
+#   #     @session
+#   #   else
+#   #     p "NEW SESSION"
+#   #     @session = Session.create(facebook_id: fbid, context: {})
+#   #   end
+#   # end
 
 #   def webhook_post
 #     @actions = {
