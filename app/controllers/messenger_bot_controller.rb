@@ -5,19 +5,68 @@ class MessengerBotController < ActionController::Base
     Session.create(facebook_id: fbid, context: {})
   end
 
-  def message(event, sender)
-    profile = sender.get_profile
-    p profile[:body]["first_name"]
-    p event
-    message = event["message"]["text"]
+  def wit_request(msg, sender)
+    @actions = {
+      :say => -> (session_id, context, msg) {
+          @session = Session.find(session_id)
+          @session.update(context: context)
+          sender.reply({ text: msg })
+      },
+      :merge => -> (session_id, context, entities, msg) {
+        @session = Session.find(session_id)
+        p entities
 
-    sender.reply({ text: "Reply: #{event['message']['text']}" })
+        if entities["gender"]
+          if entities["gender"].first["value"] == "men"
+            context["gender"] = 263046279
+          elsif entities["gender"].first["value"] == "wom"
+            context["gender"] = 263046151
+          end
+        end
+
+        if entities["brand"]
+          context["brand"] = entities["brand"].first["value"]
+        end
+
+        if entities["style"]
+          context["style"] = entities["style"].first["value"]
+        end
+        @session.update(context: context)
+        p context
+        return context
+      },
+      :error => -> (session_id, context, error) {
+        p 'Oops I don\'t know what to do.'
+      },
+      :run_query => -> (session_id, context) {
+        @session = Session.find(session_id)
+        p context['gender']
+        p context['brand']
+        p context['style']
+
+        return context
+      }
+    }
+
   end
 
-  def delivery(event, sender)
+  def message(event, sender)
+    username = sender.get_profile[:body]["first_name"]
+    msg = event["message"]["text"]
+    # sender.reply({ text: "Reply: #{event['message']['text']}" })
+    sender_id = event["sender"]["id"]
+    session = find_or_create_session(sender_id)
+    session.update(last_exchange: Time.now)
+    wit_request(msg, sender)
+    client.run_actions session.id, msg, session.context
   end
 
   def postback(event, sender)
-    payload = event["postback"]["payload"]
+    msg = event["postback"]["payload"]
+    sender_id = event["sender"]["id"]
+    session = find_or_create_session(sender)
+    session.update(last_exchange: Time.now)
+    wit_request(msg, sender)
+    client.run_actions session.id, payload, session.context
   end
 end
