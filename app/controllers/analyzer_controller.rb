@@ -124,8 +124,8 @@ class AnalyzerController < ApplicationController
                 ]
               }
           end
-      end
         send_request(request_params)
+      end
         @previous_session = @session
         @session = Session.create(facebook_id: @previous_session.facebook_id, context: {})
         return context
