@@ -71,6 +71,7 @@ class AnalyzerController < ApplicationController
         @session.update(context: context)
 
         if ["browsing"]
+          @previous_session = @session
           @session = Session.create(facebook_id: @previous_session.facebook_id, context: {})
         end
 
