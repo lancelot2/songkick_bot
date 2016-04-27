@@ -7,8 +7,8 @@ class MessengerBotController < ActionController::Base
 
   def message(event, sender)
     profile = sender.get_profile
-    p profile
-    p event
+    p profile[:body]["first_name"]
+    p event["message"]["text"]
     sender.reply({ text: "Reply: #{event['message']['text']}" })
   end
 
