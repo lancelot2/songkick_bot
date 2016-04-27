@@ -15,7 +15,7 @@ class MessengerBotController < ActionController::Base
       :merge => -> (session_id, context, entities, msg) {
         @session = Session.find(session_id)
         p entities
-
+        context["username"] = sender.get_profile[:body]["first_name"]
         if entities["gender"]
           if entities["gender"].first["value"] == "men"
             context["gender"] = 263046279
@@ -51,9 +51,7 @@ class MessengerBotController < ActionController::Base
   end
 
   def message(event, sender)
-    username = sender.get_profile[:body]["first_name"]
     msg = event["message"]["text"]
-    # sender.reply({ text: "Reply: #{event['message']['text']}" })
     sender_id = event["sender"]["id"]
     session = find_or_create_session(sender_id)
     session.update(last_exchange: Time.now)
