@@ -68,10 +68,12 @@ class AnalyzerController < ApplicationController
         if entities["style"]
           context["style"] = entities["style"].first["value"]
         end
-
-
-
         @session.update(context: context)
+
+        if ["browsing"]
+          @session = Session.create(facebook_id: @previous_session.facebook_id, context: {})
+        end
+
         p context
         return context
       },
