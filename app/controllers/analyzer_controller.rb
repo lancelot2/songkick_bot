@@ -19,14 +19,9 @@ class AnalyzerController < ApplicationController
     RestClient.post ENV["fb_url"], request_params.to_json, :content_type => :json, :accept => :json
   end
 
-  def find_or_create_session(fbid)
-    if (@session = Session.find_by facebook_id: fbid) && @session.is_fresh
-      p "FOUND"
-      @session
-    else
-      p "NEW SESSION"
-      @session = Session.create(facebook_id: fbid, context: {})
-    end
+  def find_or_create_session(fbid, max_age: 5.minutes)
+    Session.find_by(["facebook_id = ? AND last_exchange <= ?", fbid, max_age.ago]) ||
+      Session.create(facebook_id: fbid, context: {})
   end
 
   # def find_or_create_session(fbid)
