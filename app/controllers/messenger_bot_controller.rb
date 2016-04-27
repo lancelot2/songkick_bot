@@ -58,6 +58,7 @@ class MessengerBotController < ActionController::Base
     session = find_or_create_session(sender_id)
     session.update(last_exchange: Time.now)
     wit_request(msg, sender)
+    client = Wit.new ENV["wit_token"], @actions
     client.run_actions session.id, msg, session.context
   end
 
@@ -67,6 +68,7 @@ class MessengerBotController < ActionController::Base
     session = find_or_create_session(sender)
     session.update(last_exchange: Time.now)
     wit_request(msg, sender)
+    client = Wit.new ENV["wit_token"], @actions
     client.run_actions session.id, payload, session.context
   end
 end
