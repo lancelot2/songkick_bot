@@ -42,9 +42,9 @@ class MessengerBotController < ActionController::Base
   end
 
   def wit_request(msg, sender, session)
-    p gender_determination(msg, session.context)
-    p brand_determination(msg, session.context)
-    p style_determination(msg, session.context)
+    session.update(context: gender_determination(msg, session.context))
+    session.update(context: brand_determination(msg, session.context))
+    session.update(context: style_determination(msg, session.context))
     p session.context
     sender.reply({ text: msg })
   end
