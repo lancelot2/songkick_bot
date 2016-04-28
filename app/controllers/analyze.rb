@@ -1,10 +1,13 @@
 class Analyze < StructuredMessages
 
   def intent_determination(msg, context)
-    shoes_keywords = ["shoes"]
+    categories_keywords = ["categories"]
+    brands_keywords = ["brand", "brands"]
     tokenized_array = msg.split
-    if (tokenized_array & shoes_keywords).any?
-      context["intent"] = "shoes"
+    if (tokenized_array & categories_keywords).any?
+      context["intent"] = "categories"
+    elsif (tokenized_array & brands_keywords).any?
+      context["intent"] = "brands"
     end
     context
   end
@@ -46,8 +49,8 @@ class Analyze < StructuredMessages
   end
 
   def answer(session, username)
-    if session.context.count == 1
-      "Hi, #{username} ! Do you want shoes for men or women ?"
+    if session.context["intent"].nil?
+      "Hi, #{username} ! Do you want to browse through the brands or our categories ?"
     elsif session.context["gender"] && session.context.count == 2
       "Which brand are you interested in ?"
     elsif session.context["style"] && session.context.count == 3
