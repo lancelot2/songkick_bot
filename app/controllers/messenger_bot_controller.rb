@@ -1,3 +1,5 @@
+require "structured_messages"
+
 class MessengerBotController < Analyze
 
   def find_or_create_session(fbid, max_age: 5.minutes)

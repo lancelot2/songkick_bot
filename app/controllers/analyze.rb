@@ -1,3 +1,5 @@
+require "structured_messages"
+
 class Analyze < ActionController::Base
 
   def intent_determination(msg, context)
