@@ -3,7 +3,7 @@ class Analyze < ActionController::Base
   def intent_determination(msg, context)
     shoes_keywords = ["shoes"]
     tokenized_array = msg.split
-    if (tokenized_array & men_keywords).any?
+    if (tokenized_array & shoes_keywords).any?
       context["intent"] = "shoes"
     end
     context
