@@ -22,9 +22,9 @@ class MessengerBotController < ActionController::Base
     adidas_keywords = ["adidas", "Adidas"]
     tokenized_array = msg.split
     if (tokenized_array & nike_keywords).any?
-      context["gender"] = "nike"
+      context["brand"] = "nike"
     elsif (tokenized_array & adidas_keywords).any?
-       context["gender"] = "adidas"
+       context["brand"] = "adidas"
     end
     context
   end
@@ -34,9 +34,9 @@ class MessengerBotController < ActionController::Base
     lifestyle_keywords = ["lifestyle", "Lifestyle"]
     tokenized_array = msg.split
     if (tokenized_array & running_keywords).any?
-      context["gender"] = "running"
+      context["style"] = "running"
     elsif (tokenized_array & lifestyle_keywords).any?
-       context["gender"] = "lifestyle"
+       context["style"] = "lifestyle"
     end
     context
   end
