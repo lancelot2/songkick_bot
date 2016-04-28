@@ -28,40 +28,40 @@ class StructuredMessages < ActionController::Base
     p  products["products"]
     structured_reply = {
       "attachment":{
-        "type":"template",
+        "type": "template",
         "payload":{
-          "template_type":"generic",
+          "template_type": "generic",
           "elements": []
       }
     }
   }
-  p structured_reply[:attachment]
+  p structured_reply[:attachment][:payload]
 
-    # products["products"].each do |product|
-    #   structured_reply["attachment"]["payload"]["elements"] <<
-    #     { "title": product["title"],
-    #       "image_url": product["images"].first["src"],
-    #       "subtitle":"",
-    #       "buttons":[
-    #         {
-    #           "type":"postback",
-    #           "payload": "#{product["id"]}: info",
-    #           "title":"More info"
-    #         },
-    #         {
-    #           "type":"postback",
-    #           "payload": "#{product["id"]}: stock",
-    #           "title":"Check stock"
-    #         },
-    #         {
-    #           "type":"postback",
-    #           "title":"Similar items",
-    #           "payload": "#{product["id"]}: similar"
-    #         }
-    #       ]
-    #     }
-    # end
-    # sender.reply(structured_reply)
+    products["products"].each do |product|
+      structured_reply[:attachment][:payload][:elements] <<
+        { "title": product["title"],
+          "image_url": product["images"].first["src"],
+          "subtitle":"",
+          "buttons":[
+            {
+              "type":"postback",
+              "payload": "#{product["id"]}: info",
+              "title":"More info"
+            },
+            {
+              "type":"postback",
+              "payload": "#{product["id"]}: stock",
+              "title":"Check stock"
+            },
+            {
+              "type":"postback",
+              "title":"Similar items",
+              "payload": "#{product["id"]}: similar"
+            }
+          ]
+        }
+    end
+    sender.reply(structured_reply)
   end
 
   def receipt_message
