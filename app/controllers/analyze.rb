@@ -35,6 +35,14 @@ class Analyze < ActionController::Base
     context
   end
 
+  def answer(session)
+    if session.context["gender"] && sesion.context.count == 1
+      "Which brand are you interested in ?"
+    elsif session.context["brand"] && sesion.context.count == 2
+      "Which style ?"
+    end
+  end
+
   def update_context(msg, session)
     session.update(context: gender_determination(msg, session.context))
     session.update(context: brand_determination(msg, session.context))
