@@ -15,7 +15,7 @@ class MessengerBotController < Analyze
     update_context(msg, session)
     username = sender.get_profile["first_name"]
     p session.context
-    elsif session.context.count == 4
+    if session.context.count == 4
       run_query(session)
     else
       sender.reply({ text: answer(session, username) })
