@@ -1,4 +1,4 @@
-class StructuredMessages
+class StructuredMessages < ActionController::Base
   def cta_message
     sender.reply({
       "attachment":{

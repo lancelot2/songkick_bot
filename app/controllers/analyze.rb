@@ -1,6 +1,4 @@
-require "structured_messages"
-
-class Analyze < ActionController::Base
+class Analyze < StructuredMessages
 
   def intent_determination(msg, context)
     shoes_keywords = ["shoes"]
