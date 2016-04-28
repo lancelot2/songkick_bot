@@ -6,7 +6,7 @@ class MessengerBotController < AnalyzeController
   end
 
   def run_query(session)
-    p session.context
+    context = session.context
     products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
     p products
   end
