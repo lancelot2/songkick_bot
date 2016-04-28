@@ -13,11 +13,12 @@ class MessengerBotController < Analyze
 
   def analyze_request(msg, sender, session)
     update_context(msg, session)
+    username = sender.get_profile["first_name"]
     p session.context
-    if session.context.count == 3
+    elsif session.context.count == 4
       run_query(session)
     else
-      sender.reply({ text: answer(session) })
+      sender.reply({ text: answer(session, username) })
     end
   end
 
