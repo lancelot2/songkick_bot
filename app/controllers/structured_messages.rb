@@ -32,6 +32,8 @@ class StructuredMessages
           "elements": []
       }
     }
+  }
+
     products["products"].each do |product|
       structured_reply <<
         { "title": product["title"],
