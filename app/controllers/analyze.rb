@@ -51,7 +51,7 @@ class Analyze < ActionController::Base
     elsif session.context["gender"] && session.context.count == 2
       "Which brand are you interested in ?"
     elsif session.context["style"] && session.context.count == 3
-      "Which brand ?"
+      "Which brand are you interested in ?"
     elsif session.context["brand"] && session.context.count == 3
       "Which style ?"
     end

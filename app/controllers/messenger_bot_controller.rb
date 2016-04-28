@@ -5,10 +5,11 @@ class MessengerBotController < Analyze
     Session.create(facebook_id: fbid, context: {})
   end
 
-  def run_query(session)
+  def run_query(session, sender)
     context = session.context
     products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
     p products
+    generic_template_message(products, sender)
   end
 
   def analyze_request(msg, sender, session)
@@ -16,7 +17,7 @@ class MessengerBotController < Analyze
     username = sender.get_profile["first_name"]
     p session.context
     if session.context.count == 4
-      run_query(session)
+      run_query(session, sender)
     else
       sender.reply({ text: answer(session, username) })
     end
