@@ -35,7 +35,7 @@ class StructuredMessages < ActionController::Base
   }
 
     products["products"].each do |product|
-      structured_reply <<
+      structured_reply["attachment"]["payload"]["elements"] <<
         { "title": product["title"],
           "image_url": product["images"].first["src"],
           "subtitle":"",
