@@ -6,7 +6,7 @@ class MessengerBotController < ActionController::Base
   end
 
   def gender_determination(msg, context)
-    tokenized_array = msg.split.gsub(",", "")
+    tokenized_array = msg.split
     if (tokenized_array & men_keywords).any?
       context["gender"] = 263046279
     elsif (tokenized_array & women_keywords).any?
@@ -16,7 +16,7 @@ class MessengerBotController < ActionController::Base
   end
 
   def brand_determination(msg, context)
-    tokenized_array = msg.split.gsub(",", "")
+    tokenized_array = msg.split
     if (tokenized_array & nike_keywords).any?
       context["gender"] = "nike"
     elsif (tokenized_array & adidas_keywords).any?
@@ -26,7 +26,7 @@ class MessengerBotController < ActionController::Base
   end
 
   def style_determination(msg, context)
-    tokenized_array = msg.split.gsub(",", "")
+    tokenized_array = msg.split
     if (tokenized_array & running_keywords).any?
       context["gender"] = "running"
     elsif (tokenized_array & lifestyle_keywords).any?
