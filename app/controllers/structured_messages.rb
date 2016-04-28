@@ -24,6 +24,8 @@ class StructuredMessages < ActionController::Base
   end
 
   def generic_template_message(products, sender)
+    p "PRODUCTS"
+    p products
     structured_reply = {
       "attachment":{
         "type":"template",

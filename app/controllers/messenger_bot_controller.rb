@@ -1,5 +1,3 @@
-require "structured_messages"
-
 class MessengerBotController < Analyze
 
   def find_or_create_session(fbid, max_age: 5.minutes)
@@ -10,7 +8,6 @@ class MessengerBotController < Analyze
   def run_query(session, sender)
     context = session.context
     products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
-    p products
     generic_template_message(products, sender)
   end
 
