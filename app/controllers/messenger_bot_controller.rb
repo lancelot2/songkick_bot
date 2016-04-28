@@ -1,4 +1,4 @@
-class MessengerBotController < AnalyzeController
+class MessengerBotController < Analyze
 
   def find_or_create_session(fbid, max_age: 5.minutes)
     Session.find_by(["facebook_id = ? AND last_exchange >= ?", fbid, max_age.ago]) ||
