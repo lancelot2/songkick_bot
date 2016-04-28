@@ -31,7 +31,7 @@ class MessengerBotController < ActionController::Base
 
   def style_determination(msg, context)
     running_keywords = ["running", "Running"]
-    lifestyle_keywords = ["lifestyle", "Lifestyle"]
+    lifestyle_keywords = ["lifestyle", "Lifestyle"]
     tokenized_array = msg.split
     if (tokenized_array & running_keywords).any?
       context["gender"] = "running"
