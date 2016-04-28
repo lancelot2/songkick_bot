@@ -86,49 +86,49 @@
 #         p context['gender']
 #         p context['brand']
 #         p context['style']
-#         if context['gender'].nil? || context['brand'].nil? || context['style'].nil?
-#           fb_request(@session.facebook_id, "I need more information")
-#         else
-#           @products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
-#           request_params =  {
-#               recipient: {id: @session.facebook_id},
-#               message: {
-#               "attachment":{
-#                 "type":"template",
-#                 "payload":{
-#                   "template_type":"generic",
-#                   "elements":[
-#                   ]
-#                 }
-#               }
-#             },
-#               access_token: ENV["fb_token"]
-#             }
-#           @products["products"].each do |h1|
-#             request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
-#                 "image_url": h1["images"].first["src"],
-#                 "subtitle":"",
-#                 "buttons":[
-#                   {
-#                     "type":"web_url",
-#                     "url":"#",
-#                     "title":"More info"
-#                   },
-#                   {
-#                     "type":"postback",
-#                     "payload": h1["id"],
-#                     "title":"Check stock"
-#                   },
-#                   {
-#                     "type":"postback",
-#                     "title":"Similar items",
-#                     "payload":"similar"
-#                   }
-#                 ]
-#               }
-#           end
-#         send_request(request_params)
-#       end
+      #   if context['gender'].nil? || context['brand'].nil? || context['style'].nil?
+      #     fb_request(@session.facebook_id, "I need more information")
+      #   else
+      #     @products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
+      #     request_params =  {
+      #         recipient: {id: @session.facebook_id},
+      #         message: {
+      #         "attachment":{
+      #           "type":"template",
+      #           "payload":{
+      #             "template_type":"generic",
+      #             "elements":[
+      #             ]
+      #           }
+      #         }
+      #       },
+      #         access_token: ENV["fb_token"]
+      #       }
+      #     @products["products"].each do |h1|
+      #       request_params[:message][:attachment][:payload][:elements] << { "title": h1["title"],
+      #           "image_url": h1["images"].first["src"],
+      #           "subtitle":"",
+      #           "buttons":[
+      #             {
+      #               "type":"web_url",
+      #               "url":"#",
+      #               "title":"More info"
+      #             },
+      #             {
+      #               "type":"postback",
+      #               "payload": h1["id"],
+      #               "title":"Check stock"
+      #             },
+      #             {
+      #               "type":"postback",
+      #               "title":"Similar items",
+      #               "payload":"similar"
+      #             }
+      #           ]
+      #         }
+      #     end
+      #   send_request(request_params)
+      # end
 #         @previous_session = @session
 #         @session = Session.create(facebook_id: @previous_session.facebook_id, context: {})
 #         return context
