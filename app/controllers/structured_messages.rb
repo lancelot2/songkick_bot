@@ -1,5 +1,5 @@
 class StructuredMessages < ActionController::Base
-  def cta_message
+  def cta_message(sender)
     sender.reply({
       "attachment":{
         "type":"template",
@@ -24,18 +24,15 @@ class StructuredMessages < ActionController::Base
   end
 
   def generic_template_message(products, sender)
-    p "PRODUCTS"
-    p  products["products"]
     structured_reply = {
       "attachment":{
         "type": "template",
         "payload":{
           "template_type": "generic",
           "elements": []
+        }
       }
     }
-  }
-  p structured_reply[:attachment][:payload]
 
     products["products"].each do |product|
       structured_reply[:attachment][:payload][:elements] <<
