@@ -36,9 +36,9 @@ class Analyze < ActionController::Base
   end
 
   def answer(session)
-    if session.context["gender"] && sesion.context.count == 1
+    if session.context["gender"] && session.context.count == 1
       "Which brand are you interested in ?"
-    elsif session.context["brand"] && sesion.context.count == 2
+    elsif session.context["brand"] && session.context.count == 2
       "Which style ?"
     end
   end
