@@ -35,7 +35,7 @@ class Analyze < ActionController::Base
     context
   end
 
-  def update_context(session)
+  def update_context(msg, session)
     session.update(context: gender_determination(msg, session.context))
     session.update(context: brand_determination(msg, session.context))
     session.update(context: style_determination(msg, session.context))

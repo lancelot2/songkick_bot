@@ -12,7 +12,7 @@ class MessengerBotController < Analyze
   end
 
   def analyze_request(msg, sender, session)
-    update_context(session)
+    update_context(msg, session)
     p session.context
     run_query(session) if session.context.count == 3
     sender.reply({ text: msg })
