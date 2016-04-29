@@ -69,9 +69,9 @@ class Analyze < StructuredMessages
     product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?")
     product_stock = product["product"]["variants"].first["inventory_quantity"]
     if product_stock > 0
-      sender.reply({text: "We have #{product_stock} pairs left. Should I book one for you ?"})
+      cta_stock_left_message(sender, product_stock)
     else
-      sender.reply({text: "We don't have any pairs left. Should I notoify you when we'll receive one?"})
+      cta_no_stock_left_message(sender)
     end
   end
 
