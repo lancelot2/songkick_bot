@@ -113,7 +113,7 @@ class StructuredMessages < ActionController::Base
       }
     }
 
-    products["products"].each do |product|
+    products["products"][0..2].each do |product|
       structured_reply[:attachment][:payload][:elements] <<
         { "title": product["title"],
           "image_url": product["images"].first["src"],
