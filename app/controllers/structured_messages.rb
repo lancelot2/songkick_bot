@@ -24,6 +24,7 @@ class StructuredMessages < ActionController::Base
   end
 
   def cta_categories_message(sender)
+    sender.reply({text: "hey"})
     sender.reply({
       "attachment":{
         "type":"template",
