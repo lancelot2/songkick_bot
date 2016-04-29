@@ -8,7 +8,7 @@ class Analyze < StructuredMessages
   end
 
   def gender_determination(msg, context)
-    keywords = [["men", "Men"],"women", "Women", "ladies", "lady"]]
+    keywords = [["men", "Men"],["women", "Women", "ladies", "lady"]]
     tokenized_array = msg.split
     keywords.each {|array| context["gender"] = array.first if (tokenized_array & array).any? }
     context
