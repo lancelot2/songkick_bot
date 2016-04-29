@@ -32,10 +32,10 @@ class Analyze < StructuredMessages
     if session.context["intent"].nil?
       sender.reply({text: "Hi, #{username} !"})
       cta_intent_message(sender)
-    elsif session.context["intent"] == "categories" && session.context["style"].present?
+    elsif session.context["intent"] == "categories" && session.context["style"]
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?product_type=#{context['style']}")
       generic_template_message(products, sender)
-    elsif session.context["brands"] == "brands" && session.context["brand"].present?
+    elsif session.context["brands"] == "brands" && session.context["brand"]
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?&brand=#{context['brand']}")
       generic_template_message(products, sender)
     elsif session.context["intent"] == "categories"
