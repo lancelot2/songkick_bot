@@ -34,9 +34,13 @@ class Analyze < StructuredMessages
       sender.reply({text: "Hi, #{username} !"})
       cta_intent_message(sender)
     elsif context["intent"] == "categories" && context["style"].present?
+      p "REQUEST CATEGORIES"
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?product_type=#{context['style']}")
       generic_template_message(products, sender)
+         sender.reply({text: "categories"})
     elsif context["intent"] == "brands" && context["brand"].present?
+      p "REQUEST BRANDS"
+      sender.reply({text: "brand"})
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?&brand=#{context['brand']}")
       generic_template_message(products, sender)
     elsif context["intent"] == "categories"
