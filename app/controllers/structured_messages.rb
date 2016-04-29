@@ -43,8 +43,8 @@ class StructuredMessages < ActionController::Base
             },
             {
               "type":"postback",
-              "title":"T-shirts",
-              "payload":"T-shirts"
+              "title":"Sweatshirts",
+              "payload":"sweatshirts"
             }
             # {
             #   "type":"postback",

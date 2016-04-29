@@ -1,61 +1,30 @@
 class Analyze < StructuredMessages
 
   def intent_determination(msg, context)
-    categories_keywords = ["categories", "category"]
-    brands_keywords = ["brand", "brands"]
+    keywords = [["categories", "category"], ["brands", "brand"]]
     tokenized_array = msg.split
-    if (tokenized_array & categories_keywords).any?
-      context["intent"] = "categories"
-    elsif (tokenized_array & brands_keywords).any?
-      context["intent"] = "brands"
-    end
+    keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     context
   end
 
   def gender_determination(msg, context)
-    men_keywords = ["men", "Men"]
-    women_keywords = ["women", "Women", "ladies", "lady"]
+    keywords = [["men", "Men"],"women", "Women", "ladies", "lady"]]
     tokenized_array = msg.split
-    if (tokenized_array & men_keywords).any?
-      context["gender"] = 263046279
-    elsif (tokenized_array & women_keywords).any?
-       context["gender"] = 263046151
-    end
+    keywords.each {|array| context["gender"] = array.first if (tokenized_array & array).any? }
     context
   end
 
   def brand_determination(msg, context)
     keywords = [["nike", "Nike"], ["adidas", "Adidas"], ["dedicated, Dedicated"]]
-    #adidas_keywords = ["adidas", "Adidas"]
     tokenized_array = msg.split
     keywords.each {|array| context["brand"] = array.first if (tokenized_array & array).any? }
-    # if (tokenized_array & nike_keywords).any?
-    #   context["brand"] = "nike"
-    # elsif (tokenized_array & adidas_keywords).any?
-    #    context["brand"] = "adidas"
-    # end
     context
   end
 
   def style_determination(msg, context)
-    running_keywords = ["running", "Running"]
-    lifestyle_keywords = ["lifestyle", "Lifestyle"]
-    sweatshirts_keywords = ["Sweatshirts", "sweatshirts"]
-    shirts_keywords = ["Shirts", "shirts"]
-    tshirts_keywords = ["t-shirts", "T-Shirts"]
-
+    keywords = [["running", "Running"],["Sweatshirts", "sweatshirts"], ["Shirts", "shirts"]]
     tokenized_array = msg.split
-    if (tokenized_array & running_keywords).any?
-      context["style"] = "running"
-    elsif (tokenized_array & lifestyle_keywords).any?
-      context["style"] = "lifestyle"
-    elsif (tokenized_array & shirts_keywords).any?
-      context["style"] = "shirts"
-    elsif (tokenized_array & sweatshirts_keywords).any?
-      context["style"] = "sweatshirts"
-    elsif (tokenized_array & tshirts_keywords).any?
-      context["style"] = "t-shirts"
-    end
+    keywords.each {|array| context["style"] = array.first if (tokenized_array & array).any? }
     context
   end
 
@@ -67,6 +36,12 @@ class Analyze < StructuredMessages
       cta_categories_message(sender)
     elsif session.context["intent"] == "brands"
       cta_brands_message(sender)
+    elsif session.context["intent"] == "categories" && session.context["style"].present?
+      products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?product_type=#{context['style']}")
+      generic_template_message(products, sender)
+    elsif session.context["brands"] == "brands" && session.context["brand"].present?
+      products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?&brand=#{context['brand']}")
+      generic_template_message(products, sender)
     # elsif session.context["gender"] && session.context.count == 2
     #   sender.reply({text:"Which brand are you interested in ?"})
     # elsif session.context["style"] && session.context.count == 3
