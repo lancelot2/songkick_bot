@@ -54,7 +54,7 @@ class Analyze < StructuredMessages
 
   def verify_stock(msg, session, sender)
     product_id = msg.gsub(": stock", "")
-    product = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products/6208033159.json?")
+    product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?")
     product_stock = product["product"]["variants"].first["inventory_quantity"]
     if product_stock > 0
       sender.reply({text: "We have #{product_stock} pairs left. Should I book one for you ?"})
