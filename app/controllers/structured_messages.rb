@@ -23,6 +23,55 @@ class StructuredMessages < ActionController::Base
     })
   end
 
+  def cta_stock_left_message(sender, product_stock)
+    sender.reply({
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text": "We have #{product_stock} pairs left. Should I book one for you ?",
+          "buttons":[
+            {
+              "type":"postback",
+              "title":"Yes",
+              "payload":"yes: stock_left"
+            },
+            {
+              "type":"postback",
+              "title":"No",
+              "payload":"no: stock_left"
+            }
+          ]
+        }
+      }
+    })
+  end
+
+
+  def cta_no_stock_left_message(sender)
+    sender.reply({
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text": "We don't have any pairs left. Should I notify you when we'll receive one?",
+          "buttons":[
+            {
+              "type":"postback",
+              "title":"Yes",
+              "payload":"yes: no_stock_left"
+            },
+            {
+              "type":"postback",
+              "title":"Brands",
+              "payload":"no: no_stock_left"
+            }
+          ]
+        }
+      }
+    })
+  end
+
   def cta_categories_message(sender)
     sender.reply({
       "attachment":{

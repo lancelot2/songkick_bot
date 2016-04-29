@@ -1,7 +1,7 @@
 class Analyze < StructuredMessages
 
   def intent_determination(msg, context)
-    keywords = [["categories", "category"], ["brands", "brand"], ["stock", "stocks"], ["info", "information"]]
+    keywords = [["categories", "category"], ["brands", "brand"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
     tokenized_array = msg.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     context
@@ -52,6 +52,18 @@ class Analyze < StructuredMessages
     end
   end
 
+  def analyse_yes(msg, session, sender)
+    if msg.include? "no"
+      sender.reply({text: "Well noted. I will send you an update as soon as we have it in stock"})
+    else
+      sender.reply({text: "Well noted. You can proceed check out in our store. "})
+    end
+  end
+
+  def analyse_no(msg, session, sender)
+    sender.reply({text: "Well noted. Do want to keep on shopping ? "})
+  end
+
   def verify_stock(msg, session, sender)
     product_id = msg.gsub(": stock", "")
     product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?")
@@ -66,7 +78,7 @@ class Analyze < StructuredMessages
   def retrieve_info(msg, session, sender)
     product_id = msg.gsub(": info", "")
     product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?")
-    product_description = product["product"]["body_html"]
+    product_description = strip_tags(product["product"]["body_html"])
     sender.reply({text: product_description})
   end
 

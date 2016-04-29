@@ -1,4 +1,4 @@
-<%= @single_product["product"]["variants"].first["inventory_quantity"]%>
+<%= strip_tags(@single_product["product"]["body_html"]) %>
   <%#= product[1].first["title"] %>
   <%#= product[1].first["variants"].first["old_inventory_quantity"]%>
   <%#= product[1].first["product_type"]%>
