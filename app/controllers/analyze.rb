@@ -67,12 +67,13 @@ class Analyze < StructuredMessages
       cta_categories_message(sender)
     elsif session.context["intent"] = "brands"
       cta_brands_message(sender)
-    elsif session.context["gender"] && session.context.count == 2
-      sender.reply({text:"Which brand are you interested in ?"})
-    elsif session.context["style"] && session.context.count == 3
-      sender.reply({text:"Which brand are you interested in ?"})
-    elsif session.context["brand"] && session.context.count == 3
-      sender.reply({text:"Which style ?"})
+      sender.reply({text: "brands"})
+    # elsif session.context["gender"] && session.context.count == 2
+    #   sender.reply({text:"Which brand are you interested in ?"})
+    # elsif session.context["style"] && session.context.count == 3
+    #   sender.reply({text:"Which brand are you interested in ?"})
+    # elsif session.context["brand"] && session.context.count == 3
+    #   sender.reply({text:"Which style ?"})
     end
   end
 
