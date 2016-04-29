@@ -24,7 +24,6 @@ class StructuredMessages < ActionController::Base
   end
 
   def cta_categories_message(sender)
-    sender.reply({text: "hey"})
     sender.reply({
       "attachment":{
         "type":"template",
@@ -46,6 +45,45 @@ class StructuredMessages < ActionController::Base
               "type":"postback",
               "title":"T-shirts",
               "payload":"T-shirts"
+            }
+            # {
+            #   "type":"postback",
+            #   "title":"Sweatshirts",
+            #   "payload":"sweatshirts"
+            # },
+            # {
+            #   "type":"postback",
+            #   "title":"Lifestyle",
+            #   "payload":"lifestyle"
+            # }
+          ]
+        }
+      }
+    })
+  end
+
+  def cta_brands_message(sender)
+    sender.reply({
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text":"Which brand do you want to look at ?",
+          "buttons":[
+            {
+              "type":"postback",
+              "title":"Nike",
+              "payload":"nike"
+            },
+            {
+              "type":"postback",
+              "title":"Adidas",
+              "payload":"adidas"
+            },
+            {
+              "type":"postback",
+              "title":"Dedicated",
+              "payload":"dedicated"
             }
             # {
             #   "type":"postback",

@@ -25,14 +25,15 @@ class Analyze < StructuredMessages
   end
 
   def brand_determination(msg, context)
-    nike_keywords = ["nike", "Nike"]
-    adidas_keywords = ["adidas", "Adidas"]
+    keywords = [["nike", "Nike"], ["adidas", "Adidas"], ["dedicated, Dedicated"]]
+    #adidas_keywords = ["adidas", "Adidas"]
     tokenized_array = msg.split
-    if (tokenized_array & nike_keywords).any?
-      context["brand"] = "nike"
-    elsif (tokenized_array & adidas_keywords).any?
-       context["brand"] = "adidas"
-    end
+    keywords.each {|array| context["brand"] = array.first if (tokenized_array & array).any? }
+    # if (tokenized_array & nike_keywords).any?
+    #   context["brand"] = "nike"
+    # elsif (tokenized_array & adidas_keywords).any?
+    #    context["brand"] = "adidas"
+    # end
     context
   end
 
