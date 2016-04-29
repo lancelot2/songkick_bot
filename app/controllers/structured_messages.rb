@@ -63,7 +63,6 @@ class StructuredMessages < ActionController::Base
   end
 
   def cta_brands_message(sender)
-    sender.reply({text: "Brand CTA!"})
     sender.reply({
       "attachment":{
         "type":"template",

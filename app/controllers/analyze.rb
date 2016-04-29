@@ -63,11 +63,10 @@ class Analyze < StructuredMessages
     if session.context["intent"].nil?
       sender.reply({text: "Hi, #{username} !"})
       cta_intent_message(sender)
-    elsif session.context["intent"] = "categories"
+    elsif session.context["intent"] == "categories"
       cta_categories_message(sender)
-    elsif session.context["intent"] = "brands"
+    elsif session.context["intent"] == "brands"
       cta_brands_message(sender)
-      sender.reply({text: "brands"})
     # elsif session.context["gender"] && session.context.count == 2
     #   sender.reply({text:"Which brand are you interested in ?"})
     # elsif session.context["style"] && session.context.count == 3
