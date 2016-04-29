@@ -128,7 +128,7 @@ class StructuredMessages < ActionController::Base
               "type":"postback",
               "payload": "#{product["id"]}: stock",
               "title":"Check stock"
-            # },
+            }
             # {
             #   "type":"postback",
             #   "title":"Similar items",
