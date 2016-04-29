@@ -1,7 +1,7 @@
 class Analyze < StructuredMessages
 
   def intent_determination(msg, context)
-    categories_keywords = ["categories"]
+    categories_keywords = ["categories", "category"]
     brands_keywords = ["brand", "brands"]
     tokenized_array = msg.split
     if (tokenized_array & categories_keywords).any?
