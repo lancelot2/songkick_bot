@@ -18,7 +18,7 @@ class MessengerBotController < Analyze
     if session.context.count == 4
       run_query(session, sender)
     else
-      sender.reply({ text: answer(session, username) })
+      answer(session, username, sender)
     end
   end
 
@@ -35,5 +35,6 @@ class MessengerBotController < Analyze
     sender_id = event["sender"]["id"]
     session = find_or_create_session(sender)
     session.update(last_exchange: Time.now)
+    analyze_request(msg, sender, session)
   end
 end

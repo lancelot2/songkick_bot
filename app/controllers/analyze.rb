@@ -39,24 +39,39 @@ class Analyze < StructuredMessages
   def style_determination(msg, context)
     running_keywords = ["running", "Running"]
     lifestyle_keywords = ["lifestyle", "Lifestyle"]
+    sweatshirts_keywords = ["Sweatshirts", "sweatshirts"]
+    shirts_keywords = ["Shirts", "shirts"]
+    tshirts_keywords = ["t-shirts", "T-Shirts"]
+
     tokenized_array = msg.split
     if (tokenized_array & running_keywords).any?
       context["style"] = "running"
     elsif (tokenized_array & lifestyle_keywords).any?
-       context["style"] = "lifestyle"
+      context["style"] = "lifestyle"
+    elsif (tokenized_array & shirts_keywords).any?
+      context["style"] = "shirts"
+    elsif (tokenized_array & sweatshirts_keywords).any?
+      context["style"] = "sweatshirts"
+    elsif (tokenized_array & tshirts_keywords).any?
+      context["style"] = "t-shirts"
     end
     context
   end
 
-  def answer(session, username)
+  def answer(session, username, sender)
     if session.context["intent"].nil?
-      "Hi, #{username} ! Do you want to browse through the brands or our categories ?"
+      sender.reply({text: "Hi, #{username} !"})
+      cta_intent_message(sender)
+    elsif session.context["intent"] = "categories"
+       cta_categories_message(sender)
+    elsif session.context["intent"] = "brands"
+
     elsif session.context["gender"] && session.context.count == 2
-      "Which brand are you interested in ?"
+      sender.reply({text:"Which brand are you interested in ?"})
     elsif session.context["style"] && session.context.count == 3
-      "Which brand are you interested in ?"
+      sender.reply({text:"Which brand are you interested in ?"})
     elsif session.context["brand"] && session.context.count == 3
-      "Which style ?"
+      sender.reply({text:"Which style ?"})
     end
   end
 

@@ -1,27 +1,67 @@
 class StructuredMessages < ActionController::Base
-  def cta_message(sender)
+  def cta_intent_message(sender)
     sender.reply({
       "attachment":{
         "type":"template",
         "payload":{
           "template_type":"button",
-          "text":"What do you want to do next?",
+          "text":"Do you want to browse through the brands or our categories ?",
           "buttons":[
             {
-              "type":"web_url",
-              "url":"https://github.com/jun85664396/messenger-bot-rails",
-              "title":"Show Website"
+              "type":"postback",
+              "title":"Categories",
+              "payload":"category"
             },
             {
               "type":"postback",
-              "title":"Start Chatting",
-              "payload":"USER_DEFINED_PAYLOAD"
+              "title":"Brands",
+              "payload":"brand"
             }
           ]
         }
       }
     })
   end
+
+  def cta_categories_message(sender)
+    sender.reply({
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text":"Which category do you want to look at ?",
+          "buttons":[
+            {
+              "type":"postback",
+              "title":"Running",
+              "payload":"running"
+            },
+            {
+              "type":"postback",
+              "title":"Shirts",
+              "payload":"shirts"
+            },
+            {
+              "type":"postback",
+              "title":"T-shirts",
+              "payload":"T-shirts"
+            },
+            {
+              "type":"postback",
+              "title":"Sweatshirts",
+              "payload":"sweatshirts"
+            },
+            {
+              "type":"postback",
+              "title":"Lifestyle",
+              "payload":"lifestyle"
+            }
+          ]
+        }
+      }
+    })
+  end
+
 
   def generic_template_message(products, sender)
     structured_reply = {
