@@ -15,9 +15,9 @@ class MessengerBotController < Analyze
     elsif session.context["intent"] == "info"
       retrieve_info(msg, session, sender)
     elsif session.context["intent"] == "yes"
-      analyze_yes(msg, session, sender)
+      analyse_yes(msg, session, sender)
     elsif session.context["intent"] == "no"
-      analyze_no(msg, session, sender)
+      analyse_no(msg, session, sender)
     else
       answer(session, username, sender)
     end
