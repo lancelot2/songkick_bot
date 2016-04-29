@@ -41,7 +41,8 @@ class Analyze < StructuredMessages
     elsif context["intent"] == "brands" && context["brand"].present?
       p "REQUEST BRANDS"
       sender.reply({text: "brand"})
-      products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?&brand=#{context['brand']}")
+      products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?brand=#{context['brand']}")
+      p products
       generic_template_message(products, sender)
     elsif context["intent"] == "categories"
       cta_categories_message(sender)
