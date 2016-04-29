@@ -1,10 +1,5 @@
 class MessengerBotController < Analyze
 
-  def find_or_create_session(fbid, max_age: 5.minutes)
-    Session.find_by(["facebook_id = ? AND last_exchange >= ?", fbid, max_age.ago]) ||
-    Session.create(facebook_id: fbid, context: {})
-  end
-
   def run_query(session, sender)
     context = session.context
     products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
@@ -33,8 +28,16 @@ class MessengerBotController < Analyze
   def postback(event, sender)
     msg = event["postback"]["payload"]
     sender_id = event["sender"]["id"]
-    session = find_or_create_session(sender)
+    session = find_or_create_session(sender_id)
     session.update(last_exchange: Time.now)
     analyze_request(msg, sender, session)
   end
+
+  private
+
+  def find_or_create_session(fbid, max_age: 5.minutes)
+    Session.find_by(["facebook_id = ? AND last_exchange >= ?", fbid, max_age.ago]) ||
+    Session.create(facebook_id: fbid, context: {})
+  end
+
 end
