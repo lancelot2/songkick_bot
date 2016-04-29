@@ -1,7 +1,7 @@
 class Analyze < StructuredMessages
 
   def intent_determination(msg, context)
-    keywords = [["categories", "category"], ["brands", "brand"]]
+    keywords = [["categories", "category"], ["brands", "brand"], ["stock", "stocks"], ["info", "information"]]
     tokenized_array = msg.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     context
@@ -50,6 +50,24 @@ class Analyze < StructuredMessages
     # elsif session.context["brand"] && session.context.count == 3
     #   sender.reply({text:"Which style ?"})
     end
+  end
+
+  def verify_stock(msg, session, sender)
+    product_id = msg.gsub(": stock", "")
+    product = Oj.load(RestClient.get "https://91b97aeb761861c20b777ede328d512e:ec169cbd05bcd7db7b03f5d6291a3f58@myshopifybot.myshopify.com/admin/products/6208033159.json?")
+    product_stock = product["product"]["variants"].first["inventory_quantity"]
+    if product_stock > 0
+      sender.reply({text: "We have #{product_stock} pairs left. Should I book one for you ?"})
+    else
+      sender.reply({text: "We don't have any pairs left. Should I notoify you when we'll receive one?"})
+    end
+  end
+
+  def retrieve_info(msg, session, sender)
+    product_id = msg.gsub(": info", "")
+    product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?")
+    product_description = product["product"]["body_html"]
+    sender.reply({text: product_description})
   end
 
   def update_context(msg, session)

@@ -10,8 +10,10 @@ class MessengerBotController < Analyze
     update_context(msg, session)
     username = sender.get_profile[:body]["first_name"]
     p session.context
-    if session.context.count == 4
-      run_query(session, sender)
+    if session.context["intent"] == "stock"
+      verify_stock(msg, session, sender)
+    elsif session.context["intent"] == "info"
+      retrieve_info(msg, session, sender)
     else
       answer(session, username, sender)
     end
@@ -30,6 +32,7 @@ class MessengerBotController < Analyze
     sender_id = event["sender"]["id"]
     session = find_or_create_session(sender_id)
     session.update(last_exchange: Time.now)
+
     analyze_request(msg, sender, session)
   end
 
