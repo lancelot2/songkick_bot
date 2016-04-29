@@ -22,7 +22,7 @@ class Analyze < StructuredMessages
   end
 
   def style_determination(msg, context)
-    keywords = [["running", "Running"],["Sweatshirts", "sweatshirts"], ["Shirts", "shirts"]]
+    keywords = [["running", "Running"],["sweatshirts", "Sweatshirts"], ["shirts", "Shirts"]]
     tokenized_array = msg.split
     keywords.each {|array| context["style"] = array.first if (tokenized_array & array).any? }
     context
@@ -32,10 +32,10 @@ class Analyze < StructuredMessages
     if session.context["intent"].nil?
       sender.reply({text: "Hi, #{username} !"})
       cta_intent_message(sender)
-    elsif session.context["intent"] == "categories" && session.context["style"]
+    elsif session.context["intent"] == "categories" && session.context["style"].present?
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?product_type=#{context['style']}")
       generic_template_message(products, sender)
-    elsif session.context["brands"] == "brands" && session.context["brand"]
+    elsif session.context["intent"] == "brands" && session.context["brand"].present?
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?&brand=#{context['brand']}")
       generic_template_message(products, sender)
     elsif session.context["intent"] == "categories"
