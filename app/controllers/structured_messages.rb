@@ -34,12 +34,12 @@ class StructuredMessages < ActionController::Base
             {
               "type":"postback",
               "title":"Yes",
-              "payload":"yes: hasstock_left"
+              "payload":"yes :stock_left"
             },
             {
               "type":"postback",
               "title":"No",
-              "payload":"no: hasstock_left"
+              "payload":"no :stock_left"
             }
           ]
         }
@@ -59,12 +59,12 @@ class StructuredMessages < ActionController::Base
             {
               "type":"postback",
               "title":"Yes",
-              "payload":"yes: nostock_left"
+              "payload":"yes :nostock_left"
             },
             {
               "type":"postback",
               "title":"Brands",
-              "payload":"no: nostock_left"
+              "payload":"no :nostock_left"
             }
           ]
         }

@@ -84,7 +84,6 @@ class Analyze < StructuredMessages
 
   def update_context(msg, session)
     session.update(context: intent_determination(msg, session.context))
-    #session.update(context: gender_determination(msg, session.context))
     session.update(context: brand_determination(msg, session.context))
     session.update(context: style_determination(msg, session.context))
     session
