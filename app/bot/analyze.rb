@@ -1,4 +1,8 @@
-class Analyze < StructuredMessages
+class Analyze
+
+  def initialize
+
+  end
 
   def intent_determination(msg, context)
     keywords = [["categories", "category"], ["brands", "brand"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
@@ -89,3 +93,4 @@ class Analyze < StructuredMessages
     session
   end
 end
+

@@ -1,4 +1,4 @@
-class MessengerBotController < Analyze
+class MessengerBotController < ApplicationController
 
   def run_query(session, sender)
     context = session.context

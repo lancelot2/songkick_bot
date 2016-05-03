@@ -1,4 +1,8 @@
-class StructuredMessages < ActionController::Base
+class StructuredMessages
+
+  def initialize
+  end
+
   def cta_intent_message(sender)
     sender.reply({
       "attachment":{
