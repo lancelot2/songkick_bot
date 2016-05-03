@@ -1,3 +1,6 @@
+require 'analyse'
+require 'structured_messages'
+
 class MessengerBotController < ApplicationController
 
   skip_before_action :verify_authenticity_token
