@@ -1,5 +1,7 @@
 class MessengerBotController < ApplicationController
 
+  skip_before_action :verify_authenticity_token
+
   def run_query(session, sender)
     context = session.context
     products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?collection_id=#{context['gender']}&brand=#{context['brand']}&product_type=#{context['style']}")
