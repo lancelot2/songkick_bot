@@ -1,4 +1,4 @@
-require 'analyse'
+require 'analyze'
 require 'structured_messages'
 
 class MessengerBotController < ApplicationController
