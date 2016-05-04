@@ -13,7 +13,7 @@ class MessengerBotController < ApplicationController
     username = sender.get_profile[:body]["first_name"]
     p session.context
     if session.context["intent"] == "stock"
-      @analyse.verify_stock(msg, session, sender)
+      @analyze.verify_stock(msg, session, sender)
     elsif session.context["intent"] == "info"
       @analyze.retrieve_info(msg, session, sender)
     elsif session.context["intent"] == "yes"
