@@ -102,6 +102,7 @@ class Analyze
     session.update(context: intent_determination(msg, session.context))
     session.update(context: brand_determination(msg, session.context))
     session.update(context: style_determination(msg, session.context))
+    session.update(context: price_range_determination(msg, session.context))
     session
   end
 end
