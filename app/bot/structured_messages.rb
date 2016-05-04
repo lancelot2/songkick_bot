@@ -254,6 +254,27 @@ class StructuredMessage
         }
     end
     sender.reply(structured_reply)
+    sender.reply({
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text": "Do you want to check the size availabilities ?",
+          "buttons":[
+            {
+              "type":"postback",
+              "title":"Yes",
+              "payload":"yes :stock_left"
+            },
+            {
+              "type":"postback",
+              "title":"No",
+              "payload":"no :stock_left"
+            }
+          ]
+        }
+      }
+    })
   end
 
 
