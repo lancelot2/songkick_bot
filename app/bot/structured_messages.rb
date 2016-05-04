@@ -179,7 +179,7 @@ class StructuredMessage
       }
     }
 
-    products["products"][0..2].each do |product|
+    products["products"].each do |product|
       if product["variants"].first["price"].to_i < max  && product["variants"].first["price"].to_i > min
         structured_reply[:attachment][:payload][:elements] <<
           { "title": product["title"],
