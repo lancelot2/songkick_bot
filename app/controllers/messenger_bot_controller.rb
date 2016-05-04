@@ -9,17 +9,17 @@ class MessengerBotController < ApplicationController
   end
 
   def analyze_request(msg, sender, session)
-    analyze = Analyze.new.update_context(msg, session)
+    @analyze = Analyze.new.update_context(msg, session)
     username = sender.get_profile[:body]["first_name"]
     p session.context
     if session.context["intent"] == "stock"
-      analyse.verify_stock(msg, session, sender)
+      @analyse.verify_stock(msg, session, sender)
     elsif session.context["intent"] == "info"
-      analyze.retrieve_info(msg, session, sender)
+      @analyze.retrieve_info(msg, session, sender)
     elsif session.context["intent"] == "yes"
-      analyze.analyse_yes(msg, session, sender)
+      @analyze.analyse_yes(msg, session, sender)
     elsif session.context["intent"] == "no"
-      analyze.analyse_no(msg, session, sender)
+      @analyze.analyse_no(msg, session, sender)
     else
       Analyze.new.answer(session, username, sender)
     end
