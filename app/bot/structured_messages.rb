@@ -1,4 +1,4 @@
-class StructuredMessages
+class StructuredMessage
 
   def initialize
   end

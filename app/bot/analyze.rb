@@ -1,5 +1,9 @@
 class Analyze
 
+  def initialize
+
+  end
+
   def intent_determination(msg, context)
     keywords = [["categories", "category"], ["brands", "brand"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
     tokenized_array = msg.split
@@ -32,17 +36,17 @@ class Analyze
     context = session.context
     if context["intent"].nil?
       sender.reply({text: "Hi, #{username} !"})
-      cta_intent_message(sender)
+      StructuredMessage.new.cta_intent_message(sender)
     elsif context["intent"] == "categories" && context["style"].present?
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?product_type=#{context['style']}")
-      generic_template_message(products, sender)
+      StructuredMessage.new.generic_template_message(products, sender)
     elsif context["intent"] == "brands" && context["brand"].present?
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?vendor=#{context['brand']}")
-      generic_template_message(products, sender)
+      StructuredMessage.new.generic_template_message(products, sender)
     elsif context["intent"] == "categories"
-      cta_categories_message(sender)
+      StructuredMessage.new.cta_categories_message(sender)
     elsif context["intent"] == "brands"
-      cta_brands_message(sender)
+      StructuredMessage.new.cta_brands_message(sender)
     # elsif session.context["gender"] && session.context.count == 2
     #   sender.reply({text:"Which brand are you interested in ?"})
     # elsif session.context["style"] && session.context.count == 3
@@ -69,9 +73,9 @@ class Analyze
     product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?")
     product_stock = product["product"]["variants"].first["inventory_quantity"]
     if product_stock > 0
-      cta_stock_left_message(sender, product_stock)
+      StructuredMessage.new.cta_stock_left_message(sender, product_stock)
     else
-      cta_no_stock_left_message(sender)
+      StructuredMessage.new.cta_no_stock_left_message(sender)
     end
   end
 

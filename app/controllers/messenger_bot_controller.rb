@@ -1,6 +1,3 @@
-require 'analyze'
-require 'structured_messages'
-
 class MessengerBotController < ApplicationController
 
   skip_before_action :verify_authenticity_token
@@ -12,19 +9,19 @@ class MessengerBotController < ApplicationController
   end
 
   def analyze_request(msg, sender, session)
-    update_context(msg, session)
+    analyze = Analyze.new.update_context(msg, session)
     username = sender.get_profile[:body]["first_name"]
     p session.context
     if session.context["intent"] == "stock"
-      verify_stock(msg, session, sender)
+      analyse.verify_stock(msg, session, sender)
     elsif session.context["intent"] == "info"
-      retrieve_info(msg, session, sender)
+      analyze.retrieve_info(msg, session, sender)
     elsif session.context["intent"] == "yes"
-      analyse_yes(msg, session, sender)
+      analyze.analyse_yes(msg, session, sender)
     elsif session.context["intent"] == "no"
-      analyse_no(msg, session, sender)
+      analyze.analyse_no(msg, session, sender)
     else
-      answer(session, username, sender)
+      analyze.answer(session, username, sender)
     end
   end
 
