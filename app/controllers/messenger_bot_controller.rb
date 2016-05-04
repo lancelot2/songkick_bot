@@ -9,7 +9,8 @@ class MessengerBotController < ApplicationController
   end
 
   def analyze_request(msg, sender, session)
-    @analyze = Analyze.new.update_context(msg, session)
+    @analyze = Analyze.new
+    @analyze.update_context(msg, session)
     username = sender.get_profile[:body]["first_name"]
     p session.context
     if session.context["intent"] == "stock"
