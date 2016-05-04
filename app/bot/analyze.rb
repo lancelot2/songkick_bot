@@ -90,7 +90,7 @@ class Analyze
 
   def retrieve_info(msg, session, sender)
     product_id = msg.gsub(": info", "")
-    product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?fields=image")
+    product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?fields=images")
     StructuredMessage.new.more_info_message(product, sender)
   end
 
