@@ -34,6 +34,7 @@ class Analyze
         context["pricemin"] = array[1]
         context["pricemax"] = array[2]
       end
+    end
     context
   end
 
