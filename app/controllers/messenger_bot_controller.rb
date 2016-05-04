@@ -21,7 +21,7 @@ class MessengerBotController < ApplicationController
     elsif session.context["intent"] == "no"
       analyze.analyse_no(msg, session, sender)
     else
-      analyze.answer(session, username, sender)
+      Analyze.new.answer(session, username, sender)
     end
   end
 
