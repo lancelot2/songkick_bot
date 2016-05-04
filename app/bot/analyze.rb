@@ -26,9 +26,14 @@ class Analyze
   end
 
   def price_range_determination(msg, context)
-    keywords = [["less20"],["20to50"], ["more50"]]
+    keywords = [["less20", 0, 20],["20to50", 20, 50], ["more50", 50, 1000]]
     tokenized_array = msg.split
-    keywords.each {|array| context["pricerange"] = array.first if (tokenized_array & array).any? }
+    keywords.each do |array|
+      if (tokenized_array & array).any?
+        context["pricerange"] = array.first
+        context["pricemin"] = array[1]
+        context["pricemax"] = array[2]
+      end
     context
   end
 
@@ -49,7 +54,7 @@ class Analyze
       StructuredMessage.new.generic_template_message(products, sender)
     elsif context["intent"] == "pricerange" && context["pricerange"].present?
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?")
-      StructuredMessage.new.price_filtered_message(products, sender)
+      StructuredMessage.new.price_filtered_message(products, sender, context["pricemin"], context["pricemax"])
     elsif context["intent"] == "categories"
       StructuredMessage.new.cta_categories_message(sender)
     elsif context["intent"] == "brands"

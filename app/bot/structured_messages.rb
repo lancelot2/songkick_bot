@@ -167,17 +167,8 @@ class StructuredMessage
       }
     })
   end
- def price_range_filtering(session, sender)
-    products = []
-    Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?")["products"].each do |product|
-      if product["variants"].first["price"].to_i < 50  && product["variants"].first["price"].to_i > 20
-       products << product
-      end
-    end
-    StructuredMessage.new.generic_template_message(products, sender)
-  end
 
-   def price_filtered_message(products, sender)
+   def price_filtered_message(products, sender, min, max)
     structured_reply = {
       "attachment":{
         "type": "template",
@@ -189,7 +180,7 @@ class StructuredMessage
     }
 
     products["products"][0..2].each do |product|
-      if product["variants"].first["price"].to_i < 50  && product["variants"].first["price"].to_i > 20
+      if product["variants"].first["price"].to_i < max  && product["variants"].first["price"].to_i > min
         structured_reply[:attachment][:payload][:elements] <<
           { "title": product["title"],
             "image_url": product["images"].first["src"],
