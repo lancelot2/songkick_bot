@@ -167,7 +167,50 @@ class StructuredMessage
       }
     })
   end
+ def price_range_filtering(session, sender)
+    products = []
+    Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?")["products"].each do |product|
+      if product["variants"].first["price"].to_i < 50  && product["variants"].first["price"].to_i > 20
+       products << product
+      end
+    end
+    StructuredMessage.new.generic_template_message(products, sender)
+  end
 
+   def price_filtered_message(products, sender)
+    structured_reply = {
+      "attachment":{
+        "type": "template",
+        "payload":{
+          "template_type": "generic",
+          "elements": []
+        }
+      }
+    }
+
+    products["products"][0..2].each do |product|
+      if product["variants"].first["price"].to_i < 50  && product["variants"].first["price"].to_i > 20
+        structured_reply[:attachment][:payload][:elements] <<
+          { "title": product["title"],
+            "image_url": product["images"].first["src"],
+            "subtitle":"",
+            "buttons":[
+              {
+                "type":"postback",
+                "payload": "#{product["id"]}: info",
+                "title":"More info"
+              },
+              {
+                "type":"postback",
+                "payload": "#{product["id"]}: stock",
+                "title":"Check stock"
+              }
+            ]
+          }
+        end
+    end
+    sender.reply(structured_reply)
+  end
 
   def generic_template_message(products, sender)
     structured_reply = {

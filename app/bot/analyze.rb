@@ -32,16 +32,6 @@ class Analyze
     context
   end
 
-  def price_range_filtering(session, sender)
-    products = []
-    Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?")["products"].each do |product|
-      if product["variants"].first["price"].to_i < 50  && product["variants"].first["price"].to_i > 20
-       products << product
-      end
-    end
-    StructuredMessage.new.generic_template_message(products, sender)
-  end
-
   def answer(session, username, sender)
     context = session.context
     if context["intent"].nil?
@@ -58,7 +48,8 @@ class Analyze
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?vendor=#{context['brand']}")
       StructuredMessage.new.generic_template_message(products, sender)
     elsif context["intent"] == "pricerange" && context["pricerange"].present?
-      price_range_filtering(session, sender)
+      products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?")
+      StructuredMessage.new.price_filtered_message(products, sender)
     elsif context["intent"] == "categories"
       StructuredMessage.new.cta_categories_message(sender)
     elsif context["intent"] == "brands"
