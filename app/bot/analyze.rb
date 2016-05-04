@@ -90,9 +90,8 @@ class Analyze
 
   def retrieve_info(msg, session, sender)
     product_id = msg.gsub(": info", "")
-    product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?")
-    product_description = strip_tags(product["product"]["body_html"])
-    sender.reply({text: product_description})
+    product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?fields=image")
+    more_info_message(product, sender)
   end
 
   def update_context(msg, session)

@@ -194,7 +194,7 @@ class StructuredMessage
               {
                 "type":"postback",
                 "payload": "#{product["id"]}: stock",
-                "title":"Check stock"
+                "title":"Check size availabilities"
               }
             ]
           }
@@ -235,6 +235,28 @@ class StructuredMessage
     end
     sender.reply(structured_reply)
   end
+
+    def more_info_message(product, sender)
+    structured_reply = {
+      "attachment":{
+        "type": "template",
+        "payload":{
+          "template_type": "generic",
+          "elements": []
+        }
+      }
+    }
+
+    product["product"]["images"].each do |image|
+      structured_reply[:attachment][:payload][:elements] <<
+        { "title": "",
+          "image_url": image["src"],
+          "subtitle": "",
+        }
+    end
+    sender.reply(structured_reply)
+  end
+
 
   def receipt_message
 

@@ -1,5 +1,7 @@
 
-
+   <% @products["product"]["images"].each do |image| %>
+    <%= image["src"] %>
+    <% end %>
 
   <%#= product[1].first["title"] %>
   <%#= product[1].first["variants"].first["old_inventory_quantity"]%>
