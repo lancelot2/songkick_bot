@@ -249,9 +249,8 @@ class StructuredMessage
 
     product["product"]["images"].each do |image|
       structured_reply[:attachment][:payload][:elements] <<
-        { "title": "",
-          "image_url": image["src"],
-          "subtitle": "",
+        { "title": "Detailed images",
+          "image_url": image["src"]
         }
     end
     sender.reply(structured_reply)
