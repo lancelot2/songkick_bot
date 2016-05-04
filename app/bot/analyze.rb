@@ -5,18 +5,11 @@ class Analyze
   end
 
   def intent_determination(msg, context)
-    keywords = [["categories", "category"], ["brands", "brand"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
+    keywords = [["categories", "category"], ["brands", "brand"],["pricerange", "price"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
     tokenized_array = msg.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     context
   end
-
-  # def gender_determination(msg, context)
-  #   keywords = [["men", "Men"],["women", "Women", "ladies", "lady"]]
-  #   tokenized_array = msg.split
-  #   keywords.each {|array| context["gender"] = array.first if (tokenized_array & array).any? }
-  #   context
-  # end
 
   def brand_determination(msg, context)
     keywords = [["nike", "Nike"], ["addidas", "adidas", "Adidas"], ["dedicated, Dedicated"]]
@@ -32,10 +25,31 @@ class Analyze
     context
   end
 
+  def price_range_determination(msg, context)
+    keywords = [["less20"],["20to50"], ["more50"]]
+    tokenized_array = msg.split
+    keywords.each {|array| context["pricerange"] = array.first if (tokenized_array & array).any? }
+    context
+  end
+
+  def price_range_filtering(session, sender)
+    products = []
+    Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?")["products"].each do |product|
+      if product["variants"].first["price"].to_i < 50  && product["variants"].first["price"].to_i > 20
+       products << product
+      end
+    end
+    StructuredMessage.new.generic_template_message(products, sender)
+  end
+
   def answer(session, username, sender)
     context = session.context
     if context["intent"].nil?
       sender.reply({text: "Hi, #{username} !"})
+      sender.reply({text: "Welcome to the Hipster store. We are a small fashion store only selling hipster clothes."})
+      sender.reply({text: "But our real purpose is not to sell you any apparel (just quite yet) but to illustrate the possibilities of chatbots developped by My A.I. Vendor."})
+      sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you."})
+      sender.reply({text: "Let's get started !"})
       StructuredMessage.new.cta_intent_message(sender)
     elsif context["intent"] == "categories" && context["style"].present?
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?product_type=#{context['style']}")
@@ -43,16 +57,14 @@ class Analyze
     elsif context["intent"] == "brands" && context["brand"].present?
       products = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products.json?vendor=#{context['brand']}")
       StructuredMessage.new.generic_template_message(products, sender)
+    elsif context["intent"] == "pricerange" && context["pricerange"].present?
+      price_range_filtering(session, sender)
     elsif context["intent"] == "categories"
       StructuredMessage.new.cta_categories_message(sender)
     elsif context["intent"] == "brands"
       StructuredMessage.new.cta_brands_message(sender)
-    # elsif session.context["gender"] && session.context.count == 2
-    #   sender.reply({text:"Which brand are you interested in ?"})
-    # elsif session.context["style"] && session.context.count == 3
-    #   sender.reply({text:"Which brand are you interested in ?"})
-    # elsif session.context["brand"] && session.context.count == 3
-    #   sender.reply({text:"Which style ?"})
+    elsif context["intent"] == "pricerange"
+      StructuredMessage.new.cta_pricerange_message(sender)
     end
   end
 

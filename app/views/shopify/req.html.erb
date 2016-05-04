@@ -1,4 +1,10 @@
-<%= strip_tags(@single_product["product"]["body_html"]) %>
+<% @products["products"].each do |product| %>
+  <% if product["variants"].first["price"].to_i < 50  && product["variants"].first["price"].to_i > 20%>
+   <%= product["variants"].first["price"] %>
+  <% end %>
+<% end %>
+
+
   <%#= product[1].first["title"] %>
   <%#= product[1].first["variants"].first["old_inventory_quantity"]%>
   <%#= product[1].first["product_type"]%>

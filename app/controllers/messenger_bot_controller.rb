@@ -22,7 +22,7 @@ class MessengerBotController < ApplicationController
     elsif session.context["intent"] == "no"
       @analyze.analyse_no(msg, session, sender)
     else
-      Analyze.new.answer(session, username, sender)
+      @analyze.answer(session, username, sender)
     end
   end
 
@@ -39,7 +39,6 @@ class MessengerBotController < ApplicationController
     sender_id = event["sender"]["id"]
     session = find_or_create_session(sender_id)
     session.update(last_exchange: Time.now)
-
     analyze_request(msg, sender, session)
   end
 

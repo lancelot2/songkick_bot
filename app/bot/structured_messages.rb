@@ -20,6 +20,11 @@ class StructuredMessage
               "type":"postback",
               "title":"Brands",
               "payload":"brand"
+            },
+            {
+              "type":"postback",
+              "title":"Price range",
+              "payload":"pricerange"
             }
           ]
         }
@@ -99,16 +104,6 @@ class StructuredMessage
               "title":"Sweatshirts",
               "payload":"sweatshirts"
             }
-            # {
-            #   "type":"postback",
-            #   "title":"Sweatshirts",
-            #   "payload":"sweatshirts"
-            # },
-            # {
-            #   "type":"postback",
-            #   "title":"Lifestyle",
-            #   "payload":"lifestyle"
-            # }
           ]
         }
       }
@@ -138,16 +133,35 @@ class StructuredMessage
               "title":"Dedicated",
               "payload":"dedicated"
             }
-            # {
-            #   "type":"postback",
-            #   "title":"Sweatshirts",
-            #   "payload":"sweatshirts"
-            # },
-            # {
-            #   "type":"postback",
-            #   "title":"Lifestyle",
-            #   "payload":"lifestyle"
-            # }
+          ]
+        }
+      }
+    })
+  end
+
+  def cta_pricerange_message(sender)
+    sender.reply({
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text":"So what is your budget ?",
+          "buttons":[
+            {
+              "type":"postback",
+              "title":"Less than 20 euros",
+              "payload":"less20"
+            },
+            {
+              "type":"postback",
+              "title":"From 20 to 50 euros",
+              "payload":"20to50"
+            },
+            {
+              "type":"postback",
+              "title":"More than 50 euros",
+              "payload":"more50"
+            }
           ]
         }
       }
@@ -182,11 +196,6 @@ class StructuredMessage
               "payload": "#{product["id"]}: stock",
               "title":"Check stock"
             }
-            # {
-            #   "type":"postback",
-            #   "title":"Similar items",
-            #   "payload": "#{product["id"]}: similar"
-            # }
           ]
         }
     end
