@@ -32,6 +32,7 @@ gem 'rest-client', '~> 1.8'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'messenger-bot'
+gem 'commonregex'
 
 
 # Use ActiveModel has_secure_password

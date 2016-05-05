@@ -60,6 +60,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.10.0)
+    commonregex (0.1.1)
     concurrent-ruby (1.0.2)
     debug_inspector (0.0.2)
     descendants_tracker (0.0.4)
@@ -208,6 +209,7 @@ DEPENDENCIES
   binding_of_caller
   browser
   coffee-rails (~> 4.1.0)
+  commonregex
   jbuilder (~> 2.0)
   jquery-rails
   messenger-bot

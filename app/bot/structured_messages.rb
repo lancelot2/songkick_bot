@@ -32,6 +32,35 @@ class StructuredMessage
     })
   end
 
+  def cta_restart_message(sender)
+    sender.reply({
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text":"What do you want to do now:",
+          "buttons":[
+            {
+              "type":"postback",
+              "title":"Back to the main browsing menu",
+              "payload":"mainbrowsing"
+            },
+            {
+              "type":"postback",
+              "title":"Back to your filtered selection",
+              "payload":"filtered"
+            },
+            {
+              "type":"postback",
+              "title":"Back to the product description",
+              "payload":"productdescription"
+            }
+          ]
+        }
+      }
+    })
+  end
+
   def cta_stock_left_message(sender, product_stock)
     sender.reply({
       "attachment":{
@@ -49,6 +78,30 @@ class StructuredMessage
               "type":"postback",
               "title":"No",
               "payload":"no :stock_left"
+            }
+          ]
+        }
+      }
+    })
+  end
+
+  def cta_delivery_message(sender)
+    sender.reply({
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text": "Done. How do you want to proceed: ",
+          "buttons":[
+            {
+              "type":"postback",
+              "title":"Get delivered at my place",
+              "payload":"delivery"
+            },
+            {
+              "type":"postback",
+              "title":"Pick up in store",
+              "payload":"pickup"
             }
           ]
         }

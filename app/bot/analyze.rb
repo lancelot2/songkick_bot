@@ -8,7 +8,7 @@ class Analyze
     previous_context = context
     p "PREVIOUS CONTEXT"
     p previous_context
-    keywords = [["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "No"], ["yes", "Yes"]]
+    keywords = [["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "No"], ["yes", "Yes"]]
     tokenized_array = msg.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
@@ -109,7 +109,17 @@ class Analyze
     elsif context["intent"] == "nosizes"
       StructuredMessage.new.cta_sizes_choice_message(sender)
     elsif context["intent"] == "booksize"
-      sender.reply({text:" Done. How do you want to proceed ?"})
+      StructuredMessage.new.cta_delivery_message(sender)
+    elsif context["intent"] == "delivery"
+      sender.reply({text: "Great ! Can you give me your full address ? "})
+    elsif context["intent"] == "pickup"
+      StructuredMessage.new.cta_delivery_message(sender)
+      context["intent"] == "address_registration"
+    elsif context["intent"] == "address_registration"
+      sender.reply({text: "Roger that ! If ever we are missing something, one of our agents will be in touch with you"}}
+      context = {}
+      context["intent"] = "restart"
+      StructuredMessage.new.cta_restart_message(sender)
     end
   end
 
