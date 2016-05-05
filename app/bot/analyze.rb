@@ -12,10 +12,10 @@ class Analyze
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
       context["product_id"] = msg.gsub(": info", "")
-    elsif context["intent"] == ("sizes") && (msg.include? ": sizes")
-      context["product_id"] = msg.gsub(": sizes", "")
     elsif context["intent"] == "sizes" && previous_context["sizes"].present? && context["size"].present?
       context["intent"] = "booksize"
+    elsif context["intent"] == ("sizes") && (msg.include? ": sizes")
+      context["product_id"] = msg.gsub(": sizes", "")
     end
     context
   end
