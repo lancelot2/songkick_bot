@@ -6,6 +6,7 @@ class Analyze
 
   def intent_determination(msg, context)
     previous_context = context
+    p previous_context
     keywords = [["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
     tokenized_array = msg.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
