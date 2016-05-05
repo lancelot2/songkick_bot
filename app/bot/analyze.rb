@@ -9,7 +9,7 @@ class Analyze
     tokenized_array = msg.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
-      context["produc_id"] == msg.gsub(": info", "")
+      context["product_id"] = msg.gsub(": info", "")
     end
     context
   end
