@@ -110,7 +110,6 @@ class Analyze
       sender.reply({text:" Done. How do you want to proceed ?"})
     end
   end
-  end
 
   def analyse_yes(msg, session, sender)
     if msg.include? "no"
