@@ -1,7 +1,11 @@
 
-   <% @products["product"]["images"].each do |image| %>
-    <%= image["src"] %>
-    <% end %>
+   <% @products["product"]["variants"].each do |variant| %>
+   <% if variant["title"] == "Medium" %>
+    <%= variant["title"] %>
+    <%= variant["inventory_quantity"] %>
+  </br></br></br>
+     <% end %>
+   <% end %>
 
   <%#= product[1].first["title"] %>
   <%#= product[1].first["variants"].first["old_inventory_quantity"]%>

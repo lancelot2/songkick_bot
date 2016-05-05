@@ -56,6 +56,25 @@ class StructuredMessage
     })
   end
 
+  def cta_sizes_choice_message(sender)
+    sender.reply({
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text": "Type a size in particular or hit 'All sizes'",
+          "buttons":[
+            {
+              "type":"postback",
+              "title":"All sizes",
+              "payload":"allsizes"
+            },
+          ]
+        }
+      }
+    })
+  end
+
 
   def cta_no_stock_left_message(sender)
     sender.reply({
@@ -193,7 +212,7 @@ class StructuredMessage
               },
               {
                 "type":"postback",
-                "payload": "#{product["id"]}: stock",
+                "payload": "#{product["id"]}: sizes",
                 "title":"Check size availabilities"
               }
             ]
