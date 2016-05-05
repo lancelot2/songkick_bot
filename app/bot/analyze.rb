@@ -15,7 +15,7 @@ class Analyze
     elsif context["intent"] == ("sizes") && (msg.include? ": sizes")
       context["product_id"] = msg.gsub(": sizes", "")
     elsif context["intent"] == "sizes" && previous_context["sizes"].present?
-      context["intent"] == "booksize"
+      context["intent"] = "booksize"
     end
     context
   end
