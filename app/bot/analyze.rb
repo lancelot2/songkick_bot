@@ -5,7 +5,6 @@ class Analyze
   end
 
   def intent_determination(msg, context)
-    context = session.context
     previous_context = context
     keywords = [["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
     tokenized_array = msg.split
