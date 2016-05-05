@@ -112,10 +112,16 @@ class Analyze
       StructuredMessage.new.cta_delivery_message(sender)
     elsif context["intent"] == "delivery"
       sender.reply({text: "Great ! Can you give me your full address ? "})
+      context["intent"] == "address_registration"
     elsif context["intent"] == "pickup"
       StructuredMessage.new.cta_delivery_message(sender)
-      context["intent"] == "address_registration"
+      context["intent"] == "store_registration"
     elsif context["intent"] == "address_registration"
+      sender.reply({text: "Roger that ! If ever we are missing something, one of our agents will be in touch with you"})
+      context = {}
+      context["intent"] = "restart"
+      StructuredMessage.new.cta_restart_message(sender)
+    elsif context["intent"] == "store_registration"
       sender.reply({text: "Roger that ! If ever we are missing something, one of our agents will be in touch with you"})
       context = {}
       context["intent"] = "restart"
