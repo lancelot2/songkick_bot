@@ -65,10 +65,10 @@ class Analyze
       StructuredMessage.new.cta_intent_message(sender)
     elsif context["intent"] == "sizes" && context["size"].present?
       product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{context['product_id']}.json?")
-      ans = ""
+      ans = " "
       if context["size"] == "allsizes"
         product["product"]["variants"].each do |variant|
-          ans = ans + variant["title"] + ": " +  variant["inventory_quantity"] + "\n"
+          ans = ans + variant["title"].to_s + ": " +  variant["inventory_quantity"].to_s + "\n"
         end
         sender.reply({text: ans})
       else
