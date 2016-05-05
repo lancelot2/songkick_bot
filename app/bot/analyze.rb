@@ -14,9 +14,9 @@ class Analyze
     if context["intent"] == "info"
       context["product_id"] = msg.gsub(": info", "")
     elsif previous_context["intent"] == "delivery"
-      context["intent"] == "address_registration"
+      context["intent"] = "address_registration"
     elsif previous_context["intent"] == "pickup"
-      context["intent"] == "store_registration"
+      context["intent"] = "store_registration"
     elsif (context["intent"] == "sizes") && (previous_context["intent"] == "sizes") && (context.key? "size")
       p "TRUE"
       context["intent"] = "booksize"
