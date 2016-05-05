@@ -5,6 +5,8 @@ class Analyze
   end
 
   def intent_determination(msg, context)
+    context = session.context
+    previous_context = context
     keywords = [["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
     tokenized_array = msg.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
@@ -12,6 +14,10 @@ class Analyze
       context["product_id"] = msg.gsub(": info", "")
     elsif context["intent"] == ("sizes") && (msg.include? ": sizes")
       context["product_id"] = msg.gsub(": sizes", "")
+    elsif context["intent"] == "sizes" && previous_context["sizes"].present?
+      context["intent"] == "booksize"
+    elsif
+
     end
     context
   end
@@ -52,6 +58,7 @@ class Analyze
 
   def answer(session, username, sender)
     context = session.context
+    previous_context = context
     if context["intent"].nil?
       sender.reply({text: "Hi, #{username} !"})
       sleep(1)
@@ -68,13 +75,16 @@ class Analyze
       ans = " "
       if context["size"] == "allsizes"
         product["product"]["variants"].each do |variant|
-          ans = ans + variant["title"].to_s + ": " +  variant["inventory_quantity"].to_s + "\n"
+          ans = ans + variant["title"].to_s + ": " +  variant["inventory_quantity"].to_s + "left \n"
         end
+        ans = ans + "Do you want me to book a size in particular ?"
         sender.reply({text: ans})
       else
         product["product"]["variants"].each do |variant|
-          if variant["title"] == context["size"]
-            ans = ans + variant["title"].to_s + ": " +  variant["inventory_quantity"].to_s
+          if (variant["title"] == context["size"]) && (variant["inventory_quantity"] > 0)
+            ans = "We have some left ! Do you want me to book it for you ?"
+          elsif variant["title"] == context["size"]
+            ans = "I am sorry, it seems that this product is quite popular and we no longer have stock. Do you want me to notify you when it will be back on stock ?"
           end
         end
         sender.reply({text: ans})
@@ -98,6 +108,8 @@ class Analyze
       StructuredMessage.new.cta_sizes_choice_message(sender)
     elsif context["intent"] == "nosizes"
       StructuredMessage.new.cta_sizes_choice_message(sender)
+    elsif context["intent"] == "booksize"
+      sender.reply({text:" Done. How do you want to proceed ?"})
     end
   end
 
