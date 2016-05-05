@@ -273,6 +273,7 @@ class StructuredMessage
         }
     end
     sender.reply(structured_reply)
+    sleep(2)
     sender.reply({
       "attachment":{
         "type":"template",
@@ -283,12 +284,12 @@ class StructuredMessage
             {
               "type":"postback",
               "title":"Yes",
-              "payload":"yes :stock_left"
+              "payload":"sizes"
             },
             {
               "type":"postback",
               "title":"No",
-              "payload":"no :stock_left"
+              "payload":"nosizes"
             }
           ]
         }

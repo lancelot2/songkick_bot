@@ -5,7 +5,7 @@ class Analyze
   end
 
   def intent_determination(msg, context)
-    keywords = [["categories", "category"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
+    keywords = [["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
     tokenized_array = msg.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
@@ -95,6 +95,8 @@ class Analyze
     elsif context["intent"] == "pricerange"
       StructuredMessage.new.cta_pricerange_message(sender)
     elsif context["intent"] == "sizes"
+      StructuredMessage.new.cta_sizes_choice_message(sender)
+    elsif context["intent"] == "nosizes"
       StructuredMessage.new.cta_sizes_choice_message(sender)
     end
   end

@@ -46,7 +46,7 @@ class MessengerBotController < ApplicationController
 
   private
 
-  def find_or_create_session(fbid, max_age: 5.minutes)
+  def find_or_create_session(fbid, max_age: 2.minutes)
     Session.find_by(["facebook_id = ? AND last_exchange >= ?", fbid, max_age.ago]) ||
     Session.create(facebook_id: fbid, context: {})
   end
