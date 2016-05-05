@@ -6,13 +6,15 @@ class Analyze
 
   def intent_determination(msg, context)
     previous_context = context
+    p "PREVIOUS CONTEXT"
     p previous_context
     keywords = [["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no"], ["yes"]]
     tokenized_array = msg.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
       context["product_id"] = msg.gsub(": info", "")
-    elsif context["intent"] == "sizes" && previous_context["sizes"].present? && context["size"].present?
+    elsif context["intent"] == "sizes" && previous_context["sizes"] && context["size"]
+      p "TRUE"
       context["intent"] = "booksize"
     elsif context["intent"] == ("sizes") && (msg.include? ": sizes")
       context["product_id"] = msg.gsub(": sizes", "")
