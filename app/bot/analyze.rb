@@ -116,7 +116,7 @@ class Analyze
       StructuredMessage.new.cta_delivery_message(sender)
       context["intent"] == "address_registration"
     elsif context["intent"] == "address_registration"
-      sender.reply({text: "Roger that ! If ever we are missing something, one of our agents will be in touch with you"}}
+      sender.reply({text: "Roger that ! If ever we are missing something, one of our agents will be in touch with you"})
       context = {}
       context["intent"] = "restart"
       StructuredMessage.new.cta_restart_message(sender)
