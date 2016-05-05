@@ -16,8 +16,6 @@ class Analyze
       context["product_id"] = msg.gsub(": sizes", "")
     elsif context["intent"] == "sizes" && previous_context["sizes"].present?
       context["intent"] == "booksize"
-    elsif
-
     end
     context
   end
@@ -111,6 +109,7 @@ class Analyze
     elsif context["intent"] == "booksize"
       sender.reply({text:" Done. How do you want to proceed ?"})
     end
+  end
   end
 
   def analyse_yes(msg, session, sender)
