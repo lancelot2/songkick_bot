@@ -63,9 +63,9 @@ class Analyze
       sender.reply({text: "Hi, #{username} !"})
       sleep(1)
       sender.reply({text: "Welcome to the Hipster store. We are a small fashion store only selling hipster clothes."})
-      sleep(1)
+      sleep(2)
       sender.reply({text: "But our real purpose is not to sell you any apparel (just quite yet) but to illustrate the possibilities of chatbots developped by My A.I. Vendor."})
-      sleep(1)
+      sleep(2)
       sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you."})
       sleep(1)
       sender.reply({text: "Let's get started !"})
@@ -143,11 +143,11 @@ class Analyze
   end
 
   def update_context(msg, session)
-    session.update(context: size_determination(msg, session.context))
     session.update(context: intent_determination(msg, session.context))
     session.update(context: brand_determination(msg, session.context))
     session.update(context: style_determination(msg, session.context))
     session.update(context: price_range_determination(msg, session.context))
+    session.update(context: size_determination(msg, session.context))
     session
   end
 end
