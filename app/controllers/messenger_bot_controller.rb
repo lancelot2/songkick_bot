@@ -27,6 +27,8 @@ class MessengerBotController < ApplicationController
   end
 
   def find_address(lat, long)
+    p lat
+    p long
      query = lat + ',' + long
      p result
   end
