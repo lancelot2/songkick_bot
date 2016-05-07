@@ -13,6 +13,10 @@ class Analyze
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
       context["product_id"] = msg.gsub(": info", "")
+    elsif context["intent"] == "yes" && previous_context["intent"].nil?
+      context["intent"] = "start"
+    elsif context["intent"] == "no" && previous_context["intent"].nil?
+      context["intent"] = "stop"
     elsif previous_context["intent"] == "delivery"
       context["intent"] = "address_registration"
     elsif previous_context["intent"] == "pickup"
@@ -73,9 +77,9 @@ class Analyze
       sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you."})
       sleep(1)
       sender.reply({text: "Are you ready ?"})
-    elsif context["intent"] == "yes" && previous_context["intent"].nil?
+    elsif context["intent"] == "start"
       StructuredMessage.new.cta_intent_message(sender)
-    elsif context["intent"] == "no" && previous_context["intent"].nil?
+    elsif context["intent"] == "stop" && previous_context["intent"].nil?
       sender.reply({text: "Ok, what can I do for you then ?"})
     elsif context["intent"] == "sizes" && context["size"].present?
       product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{context['product_id']}.json?")
