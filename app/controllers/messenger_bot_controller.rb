@@ -43,12 +43,10 @@ class MessengerBotController < ApplicationController
     unless msg.nil?
       analyze_request(msg, sender, session)
     end
-    if event["message"]["attachments"]
-      p event["message"]["attachments"][0]
-      # ["coordinates"].present?
-      # latitude = event["postback"]["payload"]["coordinates"]["lat"]
-      # longitude = event["postback"]["payload"]["coordinates"]["long"]
-      # find_address(latitude, longitude)
+    if event["message"]["attachments"][0]["payload"]["coordinates"]
+      latitude = event["message"]["attachments"][0]["payload"]["coordinates"]["lat"]
+      longitude = event["message"]["attachments"][0]["payload"]["coordinates"]["long"]
+      find_address(latitude, longitude)
     end
   end
 
