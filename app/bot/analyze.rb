@@ -16,7 +16,7 @@ class Analyze
     elsif context["intent"] == "yes" && previous_context.size == 1
       context["intent"] = "start"
       p "START"
-    elsif context["intent"] == "no" && previous_context.size == 0
+    elsif context["intent"] == "no" && previous_context.size == 1
       context["intent"] = "stop"
     elsif previous_context["intent"] == "delivery"
       context["intent"] = "address_registration"
