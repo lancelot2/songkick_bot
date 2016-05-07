@@ -13,9 +13,9 @@ class Analyze
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
       context["product_id"] = msg.gsub(": info", "")
-    elsif context["intent"] == "yes" && previous_context["intent"].nil?
+    elsif context["intent"] == "yes" && previous_context.size == 0
       context["intent"] = "start"
-    elsif context["intent"] == "no" && previous_context["intent"].nil?
+    elsif context["intent"] == "no" && previous_context.size == 0
       context["intent"] = "stop"
     elsif previous_context["intent"] == "delivery"
       context["intent"] = "address_registration"
@@ -31,8 +31,8 @@ class Analyze
   end
 
   def brand_determination(msg, context)
-    keywords = [["nike", "Nike"], ["addidas", "adidas", "Adidas"], ["dedicated, Dedicated"]]
-    tokenized_array = msg.split
+    keywords = [["nike"], ["addidas", "adidas"] , ["dedicated"]]
+    tokenized_array = msg.downcase.split
     keywords.each {|array| context["brand"] = array.first if (tokenized_array & array).any? }
     context
   end
