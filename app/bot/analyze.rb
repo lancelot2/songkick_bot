@@ -15,7 +15,7 @@ class Analyze
     p "NEW CONTEXT"
     p context
     p (context["intent"] == "yes")
-    p (previous_context.size == )
+    p (previous_context.size == 1 )
     if context["intent"] == "info"
       context["product_id"] = msg.gsub(": info", "")
     elsif context["intent"] == "yes" && previous_context.size == 1
