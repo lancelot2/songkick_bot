@@ -27,8 +27,8 @@ class MessengerBotController < ApplicationController
   end
 
   def find_address(lat, long)
-     query = "#{lat},  #{long}"
-      p Geocoder.search(query).first(@data)
+    query = "#{lat},  #{long}"
+    p Geocoder.search(query).first.data["formatted_address"]
      # p Geocoder.search(query).first.@data["formatted_address"]
   end
 
