@@ -18,6 +18,7 @@ class Analyze
       context["product_id"] = msg.gsub(": info", "")
     elsif context["intent"] == "yes" && previous_context.size == 0
       context["intent"] = "start"
+      p "START"
     elsif context["intent"] == "no" && previous_context.size == 0
       context["intent"] = "stop"
     elsif previous_context["intent"] == "delivery"
@@ -82,7 +83,7 @@ class Analyze
       sender.reply({text: "Are you ready ?"})
     elsif context["intent"] == "start"
       StructuredMessage.new.cta_intent_message(sender)
-    elsif context["intent"] == "stop" && previous_context["intent"].nil?
+    elsif context["intent"] == "stop"
       sender.reply({text: "Ok, what can I do for you then ?"})
     elsif context["intent"] == "sizes" && context["size"].present?
       product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{context['product_id']}.json?")
@@ -140,9 +141,9 @@ class Analyze
       context = {}
       context["intent"] = "restart"
       StructuredMessage.new.cta_restart_message(sender)
-    elsif session.context["intent"] == "yes"
+    elsif session.context["intent"] == "yes" && context.size > 0
       analyse_yes(msg, session, sender)
-    elsif session.context["intent"] == "no"
+    elsif session.context["intent"] == "no" && context.size > 0
       analyse_no(msg, session, sender)
     end
   end
