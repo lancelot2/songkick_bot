@@ -17,10 +17,10 @@ class MessengerBotController < ApplicationController
       @analyze.verify_stock(msg, session, sender)
     elsif session.context["intent"] == "info"
       @analyze.retrieve_info(msg, session, sender)
-    elsif session.context["intent"] == "yes"
-      @analyze.analyse_yes(msg, session, sender)
-    elsif session.context["intent"] == "no"
-      @analyze.analyse_no(msg, session, sender)
+    # elsif session.context["intent"] == "yes"
+    #   @analyze.analyse_yes(msg, session, sender)
+    # elsif session.context["intent"] == "no"
+    #   @analyze.analyse_no(msg, session, sender)
     else
       @analyze.answer(session, username, sender)
     end
