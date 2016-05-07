@@ -67,7 +67,7 @@ class Analyze
     context
   end
 
-  def answer(session, username, sender)
+  def answer(session, username, sender, msg)
     context = session.context
     previous_context = context
     if context["intent"].nil?
@@ -141,9 +141,9 @@ class Analyze
       context["intent"] = "restart"
       StructuredMessage.new.cta_restart_message(sender)
     elsif session.context["intent"] == "yes"
-      @analyze.analyse_yes(msg, session, sender)
+      analyse_yes(msg, session, sender)
     elsif session.context["intent"] == "no"
-      @analyze.analyse_no(msg, session, sender)
+      analyse_no(msg, session, sender)
     end
   end
 
