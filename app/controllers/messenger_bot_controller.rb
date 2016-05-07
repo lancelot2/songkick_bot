@@ -36,7 +36,9 @@ class MessengerBotController < ApplicationController
     sender_id = event["sender"]["id"]
     session = find_or_create_session(sender_id)
     session.update(last_exchange: Time.now)
-    analyze_request(msg, sender, session)
+    unless msg.nil?
+      analyze_request(msg, sender, session)
+    end
   end
 
   def postback(event, sender)
