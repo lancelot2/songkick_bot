@@ -33,6 +33,7 @@ gem 'rest-client', '~> 1.8'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'messenger-bot'
 gem 'commonregex'
+gem 'geocoder'
 
 
 # Use ActiveModel has_secure_password

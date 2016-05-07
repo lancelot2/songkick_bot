@@ -8,14 +8,9 @@ class Analyze
     previous_context = context
     p "PREVIOUS CONTEXT"
     p previous_context
-    p previous_context.size
-    keywords = [["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "nope"], ["yes"]]
+    keywords = [["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "nope"], ["yes", "yeah"]]
     tokenized_array = msg.downcase.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
-    p "NEW CONTEXT"
-    p context
-    p (context["intent"] == "yes")
-    p (previous_context.size == 1 )
     if context["intent"] == "info"
       context["product_id"] = msg.gsub(": info", "")
     elsif context["intent"] == "yes" && previous_context.size == 1

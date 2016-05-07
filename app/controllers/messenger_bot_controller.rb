@@ -26,6 +26,11 @@ class MessengerBotController < ApplicationController
     end
   end
 
+  def find_address(lat, long)
+     query = lat + ',' + long
+     p result
+  end
+
   def message(event, sender)
     msg = event["message"]["text"]
     sender_id = event["sender"]["id"]
@@ -39,7 +44,13 @@ class MessengerBotController < ApplicationController
     sender_id = event["sender"]["id"]
     session = find_or_create_session(sender_id)
     session.update(last_exchange: Time.now)
-    analyze_request(msg, sender, session)
+    if event["postback"]["payload"]["coordinates"].present?
+      latitude = event["postback"]["payload"]["coordinates"]["lat"]
+      longitude = event["postback"]["payload"]["coordinates"]["long"]
+      find_address(latitude, longitude)
+    else
+      analyze_request(msg, sender, session)
+    end
   end
 
   private
