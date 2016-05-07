@@ -8,8 +8,8 @@ class Analyze
     previous_context = context
     p "PREVIOUS CONTEXT"
     p previous_context
-    keywords = [["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "No"], ["yes", "Yes"]]
-    tokenized_array = msg.split
+    keywords = [["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "nope"], ["yes"]
+    tokenized_array = msg.downcase.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
       context["product_id"] = msg.gsub(": info", "")
@@ -72,8 +72,11 @@ class Analyze
       sleep(2)
       sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you."})
       sleep(1)
-      sender.reply({text: "Let's get started !"})
+      sender.reply({text: "Are you ready ?"})
+    elsif context["intent"] == "yes" && previous_context["intent"].nil?
       StructuredMessage.new.cta_intent_message(sender)
+    elsif context["intent"] == "no" && previous_context["intent"].nil?
+      sender.reply({text: "Ok, what can I do for you then ?"})
     elsif context["intent"] == "sizes" && context["size"].present?
       product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{context['product_id']}.json?")
       ans = " "
