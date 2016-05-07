@@ -34,6 +34,7 @@ class MessengerBotController < ApplicationController
   end
 
   def message(event, sender)
+    p event
     msg = event["message"]["text"]
     sender_id = event["sender"]["id"]
     session = find_or_create_session(sender_id)
@@ -44,6 +45,7 @@ class MessengerBotController < ApplicationController
   end
 
   def postback(event, sender)
+    p event
     msg = event["postback"]["payload"]
     sender_id = event["sender"]["id"]
     session = find_or_create_session(sender_id)
