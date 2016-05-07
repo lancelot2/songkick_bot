@@ -34,6 +34,7 @@ class MessengerBotController < ApplicationController
   end
 
   def message(event, sender)
+    p "MESSAGE"
     p event
     msg = event["message"]["text"]
     sender_id = event["sender"]["id"]
@@ -45,6 +46,7 @@ class MessengerBotController < ApplicationController
   end
 
   def postback(event, sender)
+    p "POSTBACK"
     p event
     msg = event["postback"]["payload"]
     sender_id = event["sender"]["id"]
