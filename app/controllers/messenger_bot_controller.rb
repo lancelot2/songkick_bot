@@ -30,7 +30,7 @@ class MessengerBotController < ApplicationController
     p lat
     p long
      query = "#{lat},  #{long}"
-     p Geocoder.search(query)
+     p Geocoder.search(query).first
   end
 
   def message(event, sender)
