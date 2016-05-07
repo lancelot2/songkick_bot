@@ -14,6 +14,8 @@ class Analyze
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     p "NEW CONTEXT"
     p context
+    p (context["intent"] == "yes")
+    p (previous_context.size == 0)
     if context["intent"] == "info"
       context["product_id"] = msg.gsub(": info", "")
     elsif context["intent"] == "yes" && previous_context.size == 0
@@ -141,9 +143,9 @@ class Analyze
       context = {}
       context["intent"] = "restart"
       StructuredMessage.new.cta_restart_message(sender)
-    elsif session.context["intent"] == "yes" && context.size > 0
+    elsif session.context["intent"] == "yes" && context.size > 1
       analyse_yes(msg, session, sender)
-    elsif session.context["intent"] == "no" && context.size > 0
+    elsif session.context["intent"] == "no" && context.size > 1
       analyse_no(msg, session, sender)
     end
   end
