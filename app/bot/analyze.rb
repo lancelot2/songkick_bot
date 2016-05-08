@@ -80,7 +80,7 @@ class Analyze
       sleep(2)
       sender.reply({text: "But our real purpose is not to sell you any apparel (just quite yet) but to illustrate the possibilities of chatbots developped by My A.I. Vendor."})
       sleep(2)
-      sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you. Some helpful commands: - type 'help' to talk to a human \n - type 'exit' to go back to the main menu \n - type 'bye' to end the conversation})
+      sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you. Some helpful commands: - type 'help' to talk to a human \n - type 'exit' to go back to the main menu \n - type 'bye' to end the conversation"})
       sleep(1)
       sender.reply({text: "Are you ready ?"})
     elsif context["intent"] == "start"
@@ -94,6 +94,7 @@ class Analyze
       context = {}
       StructuredMessage.new.cta_intent_message(sender)
     elsif context["intent"] == "bye"
+      context = {}
       sender.reply({text: "It was a pleasure talking to you. Have a nice day #{username} !"})
     elsif context["intent"] == "sizes" && context["size"].present?
       product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{context['product_id']}.json?")
