@@ -9,7 +9,7 @@ class StructuredMessage
         "type":"template",
         "payload":{
           "template_type":"button",
-          "text":"Do you want to browse through the brands or our categories ?",
+          "text":"Do you want to browse through the brands, our categories or by price range?",
           "buttons":[
             {
               "type":"postback",

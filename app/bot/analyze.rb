@@ -8,7 +8,7 @@ class Analyze
     previous_context = context
     p "PREVIOUS CONTEXT"
     p previous_context
-    keywords = [["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "nope"], ["yes", "yeah"]]
+    keywords = [["mainbrowsing"], ["filtered"], ["productdescription"], ["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "nope"], ["yes", "yeah"]]
     tokenized_array = msg.downcase.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
@@ -116,6 +116,15 @@ class Analyze
       StructuredMessage.new.cta_categories_message(sender)
     elsif context["intent"] == "brands"
       StructuredMessage.new.cta_brands_message(sender)
+    elsif context["intent"] == "mainbrowsing"
+      context = {}
+      StructuredMessage.new.cta_intent_message(sender)
+    elsif context["intent"] == "filtered"
+      context = {}
+      StructuredMessage.new.cta_intent_message(sender)
+    elsif context["intent"] == "productdescription"
+      product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{product_id}.json?fields=images")
+      StructuredMessage.new.more_info_message(product, sender)
     elsif context["intent"] == "pricerange"
       StructuredMessage.new.cta_pricerange_message(sender)
     elsif context["intent"] == "sizes"
@@ -141,7 +150,7 @@ class Analyze
       context["intent"] = "restart"
       StructuredMessage.new.cta_restart_message(sender)
     elsif context["intent"] == "restart"
-      context = {}
+      sender.reply({text: "Roger that ! If ever we are missing something, one of our agents will be in touch with you"})
       StructuredMessage.new.cta_restart_message(sender)
     elsif session.context["intent"] == "yes" && context.size > 1
       analyse_yes(msg, session, sender)
