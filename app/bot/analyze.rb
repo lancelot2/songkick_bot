@@ -78,8 +78,9 @@ class Analyze
       sleep(2)
       sender.reply({text: "But our real purpose is not to sell you any apparel (just quite yet) but to illustrate the possibilities of chatbots developped by My A.I. Vendor."})
       sleep(2)
-      sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you. Some helpful commands: - type 'help' to talk to a human \n - type 'exit' to go back to the main menu \n - type 'bye' to end the conversation"})
+      sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you."})
       sleep(1)
+      sender.reply(text: "Some helpful commands: \n - type 'help' to talk to a human  \n - type 'exit' to go back to the main menu  \n - type 'bye' to end the conversation"})
       sender.reply({text: "Are you ready ?"})
     elsif context["intent"] == "start"
       StructuredMessage.new.cta_intent_message(sender)
