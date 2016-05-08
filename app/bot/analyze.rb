@@ -8,7 +8,7 @@ class Analyze
     previous_context = context
     p "PREVIOUS CONTEXT"
     p previous_context
-    keywords = [["help"], ["mainbrowsing"], ["filtered"], ["productdescription"], ["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "nope"], ["yes", "yeah"]]
+    keywords = [["help"], ["bye"], ["exit"], ["mainbrowsing"], ["filtered"], ["productdescription"], ["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "nope"], ["yes", "yeah"]]
     tokenized_array = msg.downcase.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
@@ -29,6 +29,9 @@ class Analyze
       context["intent"] = "booksize"
     elsif context["intent"] == ("sizes") && (msg.include? ": sizes")
       context["product_id"] = msg.gsub(": sizes", "")
+    end
+    if context["intent"].size == 0
+      sender.reply({text: "I'm not sure to understand. Type 'help' if you'd like to switch to a human operator."})
     end
     context
   end
@@ -77,7 +80,7 @@ class Analyze
       sleep(2)
       sender.reply({text: "But our real purpose is not to sell you any apparel (just quite yet) but to illustrate the possibilities of chatbots developped by My A.I. Vendor."})
       sleep(2)
-      sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you."})
+      sender.reply({text: "For now, you can navigate through our catalog of products the way you want. You can also try to type in some text directly. I might take a bit longer but I will do my best to always answer you. Some helpful commands: - type 'help' to talk to a human \n - type 'exit' to go back to the main menu \n - type 'bye' to end the conversation})
       sleep(1)
       sender.reply({text: "Are you ready ?"})
     elsif context["intent"] == "start"
@@ -87,6 +90,11 @@ class Analyze
     elsif context["intent"] == "help"
       session.update(status: "human")
       help_request(username)
+    elsif context["intent"] == "exit"
+      context = {}
+      StructuredMessage.new.cta_intent_message(sender)
+    elsif context["intent"] == "bye"
+      sender.reply({text: "It was a pleasure talking to you. Have a nice day #{username} !"})
     elsif context["intent"] == "sizes" && context["size"].present?
       product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{context['product_id']}.json?")
       ans = " "
@@ -193,22 +201,17 @@ class Analyze
 
   def help_request(username)
 
-  msg = "#{username} needs help"
+  msg = "#{username} needs help to complete its purchase"
   token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
   url = "https://graph.facebook.com/v2.6/me/messages?"
-  #url = "http://localhost:3000/webhook"
-
-  #request_params =  {"object"=>"page", "entry"=>[{"id"=>1549320162030595, "time"=>1462549480270, "messaging"=>[{"sender"=>{"id"=>1017498091672011}, "recipient"=>{"id"=>1549320162030595}, "timestamp"=>1462549373553, "message"=>{"mid"=>"mid.1462549373546:692b5ac83ad3cf5443", "seq"=>63, "text"=>"Joke"}}]}], "station"=>{"object"=>"page", "entry"=>[{"id"=>1549320162030595, "time"=>1462549480270, "messaging"=>[{"sender"=>{"id"=>1017498091672011}, "recipient"=>{"id"=>1549320162030595}, "timestamp"=>1462549373553, "message"=>{"mid"=>"mid.1462549373546:692b5ac83ad3cf5443", "seq"=>63, "text"=>"Joke"}}]}]}}
-
   request_params =  {
-    recipient: {id: 1006889982732663},
+    recipient: {id: 1005252772892814},
     "message":{
         "text": msg
     },
     access_token: token
   }
-
-RestClient.post url, request_params.to_json, :content_type => :json, :accept => :json
+  RestClient.post url, request_params.to_json, :content_type => :json, :accept => :json
   end
 
   def update_context(msg, session)
