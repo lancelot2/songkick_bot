@@ -216,7 +216,7 @@ class Analyze
   RestClient.post url, request_params.to_json, :content_type => :json, :accept => :json
   end
 
-  def update_context(msg, session)
+  def update_context(msg, session, sender)
     session.update(context: intent_determination(msg, session.context, sender))
     session.update(context: brand_determination(msg, session.context, sender))
     session.update(context: style_determination(msg, session.context, sender))
