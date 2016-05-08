@@ -30,7 +30,8 @@ class Analyze
     elsif context["intent"] == ("sizes") && (msg.include? ": sizes")
       context["product_id"] = msg.gsub(": sizes", "")
     end
-    if context["intent"].size == 0
+
+    if context.size == 0
       sender.reply({text: "I'm not sure to understand. Type 'help' if you'd like to switch to a human operator."})
     end
     context
