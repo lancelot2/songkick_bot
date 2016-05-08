@@ -31,9 +31,6 @@ class Analyze
       context["product_id"] = msg.gsub(": sizes", "")
     end
 
-    if context.size == 0 || context == previous_context
-      sender.reply({text: "I'm not sure to understand. Type 'help' if you'd like to switch to a human operator."})
-    end
     context
   end
 
@@ -169,6 +166,8 @@ class Analyze
       analyse_yes(msg, session, sender)
     elsif session.context["intent"] == "no" && context.size > 1
       analyse_no(msg, session, sender)
+    else
+      sender.reply({text: "I'm not sure to understand. Type 'help' if you'd like to switch to a human operator."})
     end
   end
 
