@@ -18,6 +18,8 @@ class Analyze
       p "START"
     elsif context["intent"] == "no" && previous_context.size == 1
       context["intent"] = "stop"
+    elsif previous_context["intent"] == "address_registration"
+      context["intent"] = "restart"
     elsif previous_context["intent"] == "delivery"
       context["intent"] = "address_registration"
     elsif previous_context["intent"] == "pickup"
@@ -87,7 +89,7 @@ class Analyze
       ans = " "
       if context["size"] == "allsizes"
         product["product"]["variants"].each do |variant|
-          ans = ans + variant["title"].to_s + ": " +  variant["inventory_quantity"].to_s + "left \n"
+          ans = ans + variant["title"].to_s + ": " +  variant["inventory_quantity"].to_s + " left \n"
         end
         ans = ans + "Do you want me to book a size in particular ?"
         sender.reply({text: ans})
@@ -124,19 +126,22 @@ class Analyze
       StructuredMessage.new.cta_delivery_message(sender)
     elsif context["intent"] == "delivery"
       sender.reply({text: "Great ! Can you give me your full address ? "})
-      context["intent"] == "address_registration"
+      context["intent"] = "address_registration"
     elsif context["intent"] == "pickup"
       StructuredMessage.new.cta_delivery_message(sender)
-      context["intent"] == "store_registration"
+      context["intent"] = "store_registration"
     elsif context["intent"] == "address_registration"
-      sender.reply({text: "Roger that ! If ever we are missing something, one of our agents will be in touch with you"})
-      context = {}
-      context["intent"] = "restart"
-      StructuredMessage.new.cta_restart_message(sender)
+      sender.reply({text: "Great ! Can you give me your full address ? "})
+      #context = {}
+      #context["intent"] = "restart"
+     # StructuredMessage.new.cta_restart_message(sender)
     elsif context["intent"] == "store_registration"
       sender.reply({text: "Roger that ! If ever we are missing something, one of our agents will be in touch with you"})
       context = {}
       context["intent"] = "restart"
+      StructuredMessage.new.cta_restart_message(sender)
+    elsif context["intent"] == "restart"
+      context = {}
       StructuredMessage.new.cta_restart_message(sender)
     elsif session.context["intent"] == "yes" && context.size > 1
       analyse_yes(msg, session, sender)
