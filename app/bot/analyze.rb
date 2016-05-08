@@ -4,7 +4,7 @@ class Analyze
 
   end
 
-  def intent_determination(msg, context)
+  def intent_determination(msg, context, sender)
     previous_context = context
     p "PREVIOUS CONTEXT"
     p previous_context
@@ -31,7 +31,7 @@ class Analyze
       context["product_id"] = msg.gsub(": sizes", "")
     end
 
-    if context.size == 0
+    if context.size == 0 || context == previous_context
       sender.reply({text: "I'm not sure to understand. Type 'help' if you'd like to switch to a human operator."})
     end
     context
@@ -217,11 +217,11 @@ class Analyze
   end
 
   def update_context(msg, session)
-    session.update(context: intent_determination(msg, session.context))
-    session.update(context: brand_determination(msg, session.context))
-    session.update(context: style_determination(msg, session.context))
-    session.update(context: price_range_determination(msg, session.context))
-    session.update(context: size_determination(msg, session.context))
+    session.update(context: intent_determination(msg, session.context, sender))
+    session.update(context: brand_determination(msg, session.context, sender))
+    session.update(context: style_determination(msg, session.context, sender))
+    session.update(context: price_range_determination(msg, session.context, sender))
+    session.update(context: size_determination(msg, session.context, sender))
     session
   end
 end
