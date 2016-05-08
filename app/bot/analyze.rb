@@ -8,7 +8,7 @@ class Analyze
     previous_context = context
     p "PREVIOUS CONTEXT"
     p previous_context
-    keywords = [["mainbrowsing"], ["filtered"], ["productdescription"], ["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "nope"], ["yes", "yeah"]]
+    keywords = [["help"], ["mainbrowsing"], ["filtered"], ["productdescription"], ["pickup"], ["delivery"], ["categories", "category"],["yessizes"], ["nosizes"], ["brands", "brand"],["pricerange", "price"], ["sizes", "size"], ["stock", "stocks"], ["info", "information"], ["no", "nope"], ["yes", "yeah"]]
     tokenized_array = msg.downcase.split
     keywords.each {|array| context["intent"] = array.first if (tokenized_array & array).any? }
     if context["intent"] == "info"
@@ -84,6 +84,9 @@ class Analyze
       StructuredMessage.new.cta_intent_message(sender)
     elsif context["intent"] == "stop"
       sender.reply({text: "Ok, what can I do for you then ?"})
+    elsif context["intent"] == "help"
+      session.update(status: "human")
+      help_request(username)
     elsif context["intent"] == "sizes" && context["size"].present?
       product = Oj.load(RestClient.get "https://#{ENV['shopify_token']}@myshopifybot.myshopify.com/admin/products/#{context['product_id']}.json?")
       ans = " "
@@ -188,6 +191,26 @@ class Analyze
     StructuredMessage.new.more_info_message(product, sender)
   end
 
+  def help_request(username)
+
+  msg = "#{username} needs help"
+  token = "CAAKs4sjMLtgBACbNSA3adhDT76dxu4A2iqNsZBcsfPgCMeVBZCbB7yGI5SiPU6PbfpFyi2W7zEclj8YXYxCG9VLcWZCBVT4XsBBEFJt6tAH8XYu1Y0W6BJsT2L6YNSvHnYV6pAgIaZB7HWrzchURHT0eSdyFB8OKR0wkkhjg0yatEx3XBIZAedcSRZAFXuSHIZD"
+  url = "https://graph.facebook.com/v2.6/me/messages?"
+  #url = "http://localhost:3000/webhook"
+
+  #request_params =  {"object"=>"page", "entry"=>[{"id"=>1549320162030595, "time"=>1462549480270, "messaging"=>[{"sender"=>{"id"=>1017498091672011}, "recipient"=>{"id"=>1549320162030595}, "timestamp"=>1462549373553, "message"=>{"mid"=>"mid.1462549373546:692b5ac83ad3cf5443", "seq"=>63, "text"=>"Joke"}}]}], "station"=>{"object"=>"page", "entry"=>[{"id"=>1549320162030595, "time"=>1462549480270, "messaging"=>[{"sender"=>{"id"=>1017498091672011}, "recipient"=>{"id"=>1549320162030595}, "timestamp"=>1462549373553, "message"=>{"mid"=>"mid.1462549373546:692b5ac83ad3cf5443", "seq"=>63, "text"=>"Joke"}}]}]}}
+
+  request_params =  {
+    recipient: {id: 1006889982732663},
+    "message":{
+        "text": msg
+    },
+    access_token: token
+  }
+
+RestClient.post url, request_params.to_json, :content_type => :json, :accept => :json
+  end
+
   def update_context(msg, session)
     session.update(context: intent_determination(msg, session.context))
     session.update(context: brand_determination(msg, session.context))
@@ -197,4 +220,5 @@ class Analyze
     session
   end
 end
+
 

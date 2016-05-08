@@ -39,13 +39,15 @@ class MessengerBotController < ApplicationController
     sender_id = event["sender"]["id"]
     session = find_or_create_session(sender_id)
     session.update(last_exchange: Time.now)
-    unless msg.nil?
-      analyze_request(msg, sender, session)
-    end
-    if event["message"]["attachments"]
-      latitude = event["message"]["attachments"][0]["payload"]["coordinates"]["lat"]
-      longitude = event["message"]["attachments"][0]["payload"]["coordinates"]["long"]
-      find_address(latitude, longitude)
+    unless session.status == "human"
+      unless msg.nil?
+        analyze_request(msg, sender, session)
+      end
+      if event["message"]["attachments"]
+        latitude = event["message"]["attachments"][0]["payload"]["coordinates"]["lat"]
+        longitude = event["message"]["attachments"][0]["payload"]["coordinates"]["long"]
+        find_address(latitude, longitude)
+      end
     end
   end
 
